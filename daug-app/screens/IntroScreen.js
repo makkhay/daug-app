@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight } from 'react-native';
 
 import LOGO from '../assets/daug_logo.png'
+import { Font } from 'expo';
 
 
 import ProfileScreen from '../screens/ProfileScreen';
@@ -16,11 +17,23 @@ export default class IntroScreen extends React.Component {
   constructor(props) {
     super(props);
 
+    state = {
+      fontLoaded: false,
+    };
+
     this.state = {
       screen: null
+      
     };
   }
+  
 
+  async componentDidMount() {
+    await Font.loadAsync({
+      'OpenSans-SemiBoldItalic': require('../assets/fonts/OpenSans-SemiBoldItalic.ttf')
+    });
+    this.setState({ fontLoaded: true });
+  }
 
 
   onButtonPressed(type) {
@@ -42,14 +55,17 @@ export default class IntroScreen extends React.Component {
     } else {
     return (
       <View style = { styles.mainContainer}> 
-
+        {this.state.fontLoaded &&
        <View style = { styles.bigImageContainer } >
         <Image
           source={LOGO}
           style={styles.logoImage} resizeMode="contain" />
           <Text style={styles.logoTitle}>DAUG</Text>
+          
       </View >
-       
+        }
+     
+     {this.state.fontLoaded &&
        <View style = {styles.LScontainer}>
 
         <TouchableHighlight activeOpacity={0.5}
@@ -68,6 +84,8 @@ export default class IntroScreen extends React.Component {
        
        
         </View>
+     }
+        
       </View>
     );
   }
@@ -94,6 +112,7 @@ mainContainer: {
   logoTitle: {
     color: 'white',
     fontSize: 32,
+    fontFamily: 'OpenSans-SemiBoldItalic'
 
   },
 
@@ -112,6 +131,8 @@ mainContainer: {
   buttons: {
     color: 'white',
     fontSize: 20,
+    fontFamily: 'OpenSans-SemiBoldItalic'
+
   },
   
 

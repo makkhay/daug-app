@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Image,ScrollView, FlatList, TouchableOpacity } 
 import { SOCIAL_FEED_MOCK_DATA } from '../assets/SOCIAL_FEED_MOCK_DATA';
 import { Ionicons } from '@expo/vector-icons';
 import ProfileScreen from '../screens/ProfileScreen';
+import { Font } from 'expo';
 
 
 
@@ -11,10 +12,20 @@ export default class SocialFeedScreen extends React.Component {
   constructor(props) {
     super(props);
     console.log("log 1");
+    state = {
+      fontLoaded: false,
+    };
     
     this.state = { screen: null  };
   }
-  
+  async componentDidMount() {
+    await Font.loadAsync({
+      'OpenSans-SemiBoldItalic': require('../assets/fonts/OpenSans-SemiBoldItalic.ttf')
+    });
+    this.setState({ fontLoaded: true });
+  }
+
+
   renderProfile= () => {
     this.setState({ screen: 'ProfileScreen' })
     console.log("test");
@@ -24,27 +35,31 @@ export default class SocialFeedScreen extends React.Component {
    // this will render one post
    renderItem = ({item}) => {
     return(
-    <View style = { styles.itemContainer}>
+     
+        <View style = { styles.itemContainer}>
+       
        
        <View style={styles.headerContainer}>
         <Image 
           source={{uri: item.image}}
           style={{
-            width: 30,
-            height: 30,
-            borderRadius: 15,
+            width: 40,
+            height: 40,
+            borderRadius: 20,
           }}
         />
-       
+         {this.state.fontLoaded &&
         <View style={styles.nameLocationContainer}>
          <TouchableOpacity style = {styles.nameContainer}
            onPress={this.renderProfile} 
          >
-           <Text style={styles.nameContainer}> {item.name} </Text> 
+           <Text style={styles.nameAndLocationContainer}> {item.name} </Text> 
          </TouchableOpacity> 
-          <Text style={styles.locationContainer}> {item.location} </Text>
+          <Text style={styles.nameAndLocationContainer}> {item.location} </Text>
         </View>
+         }
       </View>
+        
 
 
     <Image
@@ -84,10 +99,14 @@ export default class SocialFeedScreen extends React.Component {
          />
      
         </View>
+     
       </View>
-    </View>
+   
+        
+  
+   </View> 
      )
-
+    
    }
 
 
@@ -104,9 +123,11 @@ export default class SocialFeedScreen extends React.Component {
     <ScrollView style = {styles.scrollContainer}>  
     
        <FlatList 
+            style={styles.list}
             data = {SOCIAL_FEED_MOCK_DATA}
             style={styles.container}
-            renderItem={(item,seperator) => this.renderItem(item, seperator)}
+            keyExtractor={(item, index) => index}
+            renderItem={(item) => this.renderItem(item)}
         
       />
     </ScrollView>  
@@ -123,26 +144,30 @@ const styles = StyleSheet.create({
     flexGrow :1
   },
   itemContainer: {
-    flex: 1
+    flex: 1,
+
+    
   },
   headerContainer: {
     flexDirection : 'row',
+    paddingTop: 40,
     justifyContent: 'flex-start',
     alignItems: 'center', 
+    
   
   },
 
    nameLocationContainer : {
     paddingLeft: 5,
+
    } ,
-   locationContainer: {
+   
+  nameAndLocationContainer:{
     flexDirection: 'column',
     justifyContent: 'space-around',
+    fontFamily: 'OpenSans-SemiBoldItalic'
     
-  },
-  nameContainer:{
-    flexDirection: 'column',
-    justifyContent: 'space-around'
+
   },
   
   captionContainer: {
@@ -157,7 +182,10 @@ const styles = StyleSheet.create({
   iconButtonContainer : {
     flexDirection: 'row',
     alignItems: 'center',
-  }
+  },
+  list: {
+    flex: 1,
+  },
   
 
 });

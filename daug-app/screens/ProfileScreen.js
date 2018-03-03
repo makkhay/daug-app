@@ -3,23 +3,45 @@ import { StyleSheet, Text, View , ScrollView, Image, TouchableOpacity} from 'rea
 
 import COVER from '../assets/Cover.png'
 import PROFILE from '../assets/Profile.png'
-
+import { Font } from 'expo';
+import IntroScreen from '../screens/IntroScreen';
 
 
 export default class ProfileScreen extends React.Component {
 
   constructor(props){
     super(props);
+   
+    state = {
+      fontLoaded: false,
+    };
+    this.state = { screen: null  };
   
   }
+  logOutPressed =()=> {
+    this.setState({ screen: 'IntroScreen' })
+  }
 
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'OpenSans-SemiBoldItalic': require('../assets/fonts/OpenSans-SemiBoldItalic.ttf')
+    });
+    this.setState({ fontLoaded: true });
+  }
   render() {
-    
+    const { screen } = this.state
+
+    if (screen === 'IntroScreen') {
+      return <IntroScreen />;
+    }
 
     return (
 
      <ScrollView>
+     
        <View style={styles.container} >
+       
          <View style ={styles.coverAndDescriptionMainContainer}>
            <View style = {styles.coverConatainer}>
              <Image 
@@ -76,25 +98,36 @@ export default class ProfileScreen extends React.Component {
 
     
              <View style = {styles.profileDetailContainer}>
+             
                 <View style = {styles.userNameAndDescriptionContainer}>
                    <Text style = {styles.userName}> Charlier </Text>
-                   <Text> Best dog lover </Text>
-                </View>  
-               
+                  
+                   <Text style = {styles.userDescription}> Best dog lover </Text>
+                </View> 
+                 
+                
+             
           </View>
+             
+             
 
         </View>
+             
       </View>  
+       
 
          <View style={styles.userFeedViewContainer}>
             <TouchableOpacity
                       style={styles.logOutButton}
-                      onPress={this.handleClick}
+                      onPress={this.logOutPressed}
                      >
                       <Text style={styles.logOutText}> Log Out </Text>
                      </TouchableOpacity>
           </View>
+       
        </View>  
+       
+       
     </ScrollView>
     );
   }
@@ -217,6 +250,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 'normal'
   },
+   userDescription : {
 
+   }
 
 });

@@ -5,18 +5,31 @@ import SocialFeedScreen from '../screens/SocialFeedScreen'
 // import Icon from 'react-native-vector-icons';
 
 
+import { Button, Input } from 'react-native-elements';
+import { MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 
+import { Font } from 'expo';
 
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
 
+    state = {
+      fontLoaded: false,
+    };
     this.state = {
       email: '',
       password: '',
       screen: null,
     };
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'OpenSans-SemiBoldItalic': require('../assets/fonts/OpenSans-SemiBoldItalic.ttf')
+    });
+    this.setState({ fontLoaded: true });
   }
 
 
@@ -63,35 +76,52 @@ export default class LoginScreen extends React.Component {
     }
 
     return (
-      <View style={styles.mainContainer}>
-        <View style = {styles.inputFieldContainer}>
-        {/* <Icon style={styles.searchIcon} name="ios-search" size={20} color="#000"/> */}
-        <TextInput
-          style={styles.textInput}
-          underlineColorAndroid={'transparent'}
-          // inlineImageLeft='lock'
-          placeholder="Email"
-          placeholderTextColor="white"
-          selectionColor="white"
-          inputStyle={{ color: 'white', fontSize: 16 }}
-          value={this.state.email}
-          onChangeText={(text) => this.setState({email: text})}
-          //call handle submit to display an alert
-          onSubmitEditing={this.handleSubmit}
-        />
 
-       <TextInput
-          style={styles.textInput}
-          underlineColorAndroid={'transparent'}
-          placeholder="Password"
-          placeholderTextColor="white"
-          selectionColor="white"
-          inputStyle={{ color: 'white', fontSize: 16 }}
-          value={this.state.password}
-          onChangeText={(text) => this.setState({password: text})}
-          //call handle submit to display an alert
-          onSubmitEditing={this.handleSubmit}
-        />
+      
+      <View style={styles.mainContainer}>
+       {this.state.fontLoaded &&
+        <View style = {styles.inputFieldContainer}>
+         <Input
+	           placeholder='Email'
+          	 placeholderTextColor="white"
+	          inputStyle={{ color: "white"}}
+	          autoCapitalize="none"
+          	autoCorrect={false}
+            returnKeyType="next"
+            value={this.state.email}
+            onChangeText={(text) => this.setState({email: text})}
+           	containerStyle={styles.textInput}
+             leftIcon={
+              <MaterialCommunityIcons
+              name="email-outline"
+              size={24}
+              color="white"
+	
+	           />
+           	}
+           />
+
+
+
+           <Input
+	           placeholder='Password'
+          	 placeholderTextColor="white"
+	          inputStyle={{ color: "white"}}
+	          autoCapitalize="none"
+          	autoCorrect={false}
+            returnKeyType="next"
+            value={this.state.password}
+            onChangeText={(text) => this.setState({password: text})}
+           	containerStyle={styles.textInput}
+             leftIcon={
+              <MaterialCommunityIcons
+              name="lock-outline"
+              size={24}
+              color="white"
+	
+	           />
+           	}
+           />
 
         <TouchableOpacity
           style={[styles.toggleButton, !this.loginValid() && { backgroundColor: 'black'}] }
@@ -100,7 +130,9 @@ export default class LoginScreen extends React.Component {
        </TouchableOpacity>
 
         </View>
+       } 
       </View>
+     
     );
   }
 }
@@ -115,24 +147,21 @@ const styles = StyleSheet.create({
 
   inputFieldContainer: {
     flexDirection: 'column',
-    padding: 20,
-    marginTop: 40,
+    padding: 10,
+    marginTop: 80,
     alignItems: 'center',
+    marginVertical: 20
+    
    
     
   },
   textInput : {
     height: 50,
     width: 300,
-    paddingLeft: 8,
     borderRadius: 53,
     borderWidth: 1,
     borderColor: 'white',
-    marginVertical: 10,
-    color: 'white',
-
-
-      
+    marginVertical: 10,  
   },
   searchIcon: {
     padding: 10,
@@ -154,6 +183,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     color: 'white',
+    fontFamily: 'OpenSans-SemiBoldItalic'
   },
 
 });

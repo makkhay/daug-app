@@ -4,6 +4,8 @@
   "dependencies": {
     "expo": "^25.0.0",
     "react": "16.2.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz"
+    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "react-native-elements": "^1.0.0-beta2",
+    "react-native-vector-icons": "^4.5.0"
   }
 }

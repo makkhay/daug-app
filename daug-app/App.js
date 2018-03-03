@@ -4,6 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import IntroScreen from './screens/IntroScreen';
 import SocialFeedScreen from './screens/SocialFeedScreen';
 import ProfileScreen from './screens/ProfileScreen'
+import LoginScreen from './screens/LoginScreen'
+
 
 
 
@@ -16,8 +18,10 @@ export default class App extends React.Component {
    return(
     <View style={styles.container}>
      {/* <ProfileScreen/>  */}
-    {/* <SocialFeedScreen/>  */}
-    <IntroScreen/>
+    <SocialFeedScreen/> 
+    {/* <IntroScreen/> */}
+    {/* <Demo/> */}
+    {/* <LoginScreen/> */}
   </View>
    );
   }

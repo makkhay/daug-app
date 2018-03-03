@@ -1,20 +1,38 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert  } from 'react-native';
+import { LinearGradient, Font } from 'expo';
+import { Button, Input } from 'react-native-elements';
+import { MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
+import IntroScreen from '../screens/IntroScreen';
 
 export default class SignupScreen extends React.Component {
  
   constructor(props) {
     super(props);
+    state = {
+      fontLoaded: false,
+    };
 
     this.state = {
       name: '',
       email: '',
       password: '',
+      screen: null,
     };
   }
 
+  async componentDidMount() {
+    await Font.loadAsync({
+      'OpenSans-SemiBoldItalic': require('../assets/fonts/OpenSans-SemiBoldItalic.ttf')
+    });
+    this.setState({ fontLoaded: true });
+  }
+
+
+
   signUpButtonPressed(){
     const { name, email, password } = this.state;
+    this.setState({ screen: 'IntroScreen' });
 
     return (
       Alert.alert(
@@ -37,47 +55,80 @@ export default class SignupScreen extends React.Component {
 
 
   render() {
+    const { screen } = this.state
+
+    if (screen === 'IntroScreen') {
+      return <IntroScreen />;
+    }
     return (
       <View style={styles.mainContainer}>
+         {this.state.fontLoaded &&
        <View style = {styles.inputFieldContainer}>
-         <TextInput
-          style={styles.textInput}
-          underlineColorAndroid={'transparent'}
-          placeholder="Name"
-          placeholderTextColor="white"
-          selectionColor="white"
-          value={this.state.name}
-          onChangeText={(text) => this.setState({name: text})}
-          //call handle submit to display an alert
-          onSubmitEditing={this.handleSubmit}
-        />
 
-       <TextInput
-          style={styles.textInput}
-          underlineColorAndroid={'transparent'}
-          placeholder="Email"
-          placeholderTextColor="white"
-          selectionColor="white"
-          inputStyle={{ color: 'white', fontSize: 16 }}
-          value={this.state.email}
-          onChangeText={(text) => this.setState({email: text})}
-          //call handle submit to display an alert
-          onSubmitEditing={this.handleSubmit}
-        />
+          <Input
+	           placeholder='Name'
+          	 placeholderTextColor="white"
+	          inputStyle={{ color: "white"}}
+	          autoCapitalize="none"
+          	autoCorrect={false}
+            returnKeyType="next"
+            value={this.state.name}
+            onChangeText={(text) => this.setState({name: text})}
+            onSubmitEditing={this.handleSubmit}
+           	containerStyle={styles.textInput}
+             leftIcon={
+              <MaterialCommunityIcons
+              name="contacts"
+              size={24}
+              color="white"
+	
+	           />
+           	}
+           />
+
+        <Input
+	           placeholder='Email'
+          	 placeholderTextColor="white"
+	          inputStyle={{ color: "white"}}
+	          autoCapitalize="none"
+          	autoCorrect={false}
+            returnKeyType="next"
+            value={this.state.email}
+            onChangeText={(text) => this.setState({email: text})}
+            onSubmitEditing={this.handleSubmit}
+           	containerStyle={styles.textInput}
+             leftIcon={
+              <MaterialCommunityIcons
+              name="email-outline"
+              size={24}
+              color="white"
+	
+	           />
+           	}
+           />
 
 
-        <TextInput
-          style={styles.textInput}
-          underlineColorAndroid={'transparent'}
-          placeholder="Password"
-          placeholderTextColor="white"
-          selectionColor="white"
-          inputStyle={{ color: 'white', fontSize: 16 }}
-          value={this.state.password}
-          onChangeText={(text) => this.setState({password: text})}
-          //call handle submit to display an alert
-          onSubmitEditing={this.handleSubmit}
-        />
+        <Input
+	           placeholder='Password'
+          	 placeholderTextColor="white"
+	          inputStyle={{ color: "white"}}
+	          autoCapitalize="none"
+          	autoCorrect={false}
+            returnKeyType="next"
+            value={this.state.password}
+            onChangeText={(text) => this.setState({password: text})}
+            onSubmitEditing={this.handleSubmit}
+           	containerStyle={styles.textInput}
+            // If email input is wrong use: shake={true}
+             leftIcon={
+              <MaterialCommunityIcons
+              name="lock-outline"
+              size={24}
+              color="white"
+	
+	           />
+           	}
+           />
 
         <TouchableOpacity
           style={[styles.toggleButton, !this.loginValid() && { backgroundColor: 'black'}] }
@@ -87,6 +138,7 @@ export default class SignupScreen extends React.Component {
        </TouchableOpacity>
 
         </View>
+         } 
       </View>
     );
   }
@@ -102,7 +154,10 @@ const styles = StyleSheet.create({
   inputFieldContainer: {
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    marginVertical: 20,
+    marginTop: 15,
+    padding: 10,
+
     
   },
   textInput : {
@@ -113,14 +168,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white',
     marginVertical: 10,
-    color: 'white'
+
 
       
   },
   toggleButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#01579B',
+    backgroundColor: '#4CAF50',
     padding: 10,
     borderWidth: 1,
     borderRadius: 5,
@@ -134,6 +189,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     color: 'white',
+    fontFamily: 'OpenSans-SemiBoldItalic'
   },
 
 });
