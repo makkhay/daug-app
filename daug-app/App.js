@@ -18,8 +18,8 @@ export default class App extends React.Component {
    return(
     <View style={styles.container}>
      {/* <ProfileScreen/>  */}
-    <SocialFeedScreen/> 
-    {/* <IntroScreen/> */}
+    {/* <SocialFeedScreen/>  */}
+    <IntroScreen/>
     {/* <Demo/> */}
     {/* <LoginScreen/> */}
   </View>
