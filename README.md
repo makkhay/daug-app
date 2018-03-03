@@ -60,7 +60,7 @@ Social feed screen based on Facebook.
 
 ### Demo
 
-![working_gif_assignment_3](https://imgur.com/A1KwoPU)
+![working_gif_assignment_3](https://i.imgur.com/A1KwoPU.gif)
 
 ## Submission
 
