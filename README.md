@@ -62,26 +62,7 @@ Social feed screen based on Facebook.
 
 ![working_gif_assignment_3](https://i.imgur.com/A1KwoPU.gif)
 
-## Submission
 
-Once you have completed the assignment, please create a new issue on this repo with the title as your name and add the link to your repo in the description. One of the TA's will review your code and add your name to the list of completed submissions below if all looks good.
-
-### Completed submissions
-
-- [ ] Ryan Liszewski
-- [ ] Thomas Zhu
-- [ ] Bhavesh Chowdhury
-- [ ] Sukhjit Singh
-- [ ] Prakash Gurung
-- [ ] Nicholas Szeto
-- [ ] Emanuel Saunders
-- [ ] William Hua
-- [ ] Mitul Savani
-- [ ] Jakhongir Khusanov
-- [ ] Teodora Caneva
-- [ ] Affaan Ghazzali
-- [ ] Girish Rawat
-- [ ] Karan Gupta
 
 ## Problems?
 
