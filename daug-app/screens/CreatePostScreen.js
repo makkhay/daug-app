@@ -29,7 +29,7 @@ export default class CreatePostScreen extends React.Component {
       <TouchableOpacity  onPress={() => {
         Alert.alert(
           'Success!',
-          `The post has been created with:`,
+          `The post has been created!!! `,
           [
             { text: "OK", onPress: () => navigation.navigate('SocialStack') }
           ],
