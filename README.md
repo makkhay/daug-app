@@ -10,7 +10,7 @@ This repo is the mobile app for Daug.
 - They can **upload selfies** or **post their thoughts** for other pets to see.
 - They can also look at **other pets posts** and either **paw** (like) or **scratch** (dislike) it.
 
-### [Demo - Try it on Expo](https://exp.host/@thomashzhu/daug-mobile)
+### [Demo - Try it on Expo](https://expo.io/@makkhay/daug-app)
 
 ## Getting started
 
@@ -59,30 +59,10 @@ Social feed screen based on Facebook.
 - [x] Attach screenshots/gif of screens to `README.MD`
 
 ### Demo
-![working_gif_assignment_4](https://i.imgur.com/MAd6DTz.gif)
-<br />
-https://i.imgur.com/MAd6DTz.gif
 
-## Submission
+![working_gif_assignment_3](https://i.imgur.com/A1KwoPU.gif)
 
-Once you have completed the assignment, please create a new issue on this repo with the title as your name and add the link to your repo in the description. One of the TA's will review your code and add your name to the list of completed submissions below if all looks good.
 
-### Completed submissions
-
-- [ ] Ryan Liszewski
-- [ ] Thomas Zhu
-- [ ] Bhavesh Chowdhury
-- [ ] Sukhjit Singh
-- [ ] Prakash Gurung
-- [ ] Nicholas Szeto
-- [ ] Emanuel Saunders
-- [ ] William Hua
-- [ ] Mitul Savani
-- [ ] Jakhongir Khusanov
-- [ ] Teodora Caneva
-- [ ] Affaan Ghazzali
-- [ ] Girish Rawat
-- [ ] Karan Gupta
 
 ## Problems?
 
