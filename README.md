@@ -89,7 +89,7 @@ Social feed screen based on Facebook.
 - [x] Add working gif of app to `README.MD`
 
 ### Demo
-![assignment_2](https://i.imgur.com/XheHhg5.gif)
+![assignment_2](https://i.imgur.com/fXfuvdS.gif)
 
 
 
