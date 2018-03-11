@@ -2,7 +2,7 @@
 
 This repo is the mobile app for Daug.
 
-## What's Daug?
+## What is Daug?
 
 **Daug is a social network for pets.**
 
