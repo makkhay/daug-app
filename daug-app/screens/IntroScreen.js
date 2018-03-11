@@ -13,6 +13,9 @@ import SocialFeedScreen from '../screens/SocialFeedScreen';
 
 
 export default class IntroScreen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
 
   constructor(props) {
     super(props);
@@ -38,6 +41,7 @@ export default class IntroScreen extends React.Component {
 
   onButtonPressed(type) {
     this.setState({ screen: type })
+   
   }
 
 
@@ -71,14 +75,14 @@ export default class IntroScreen extends React.Component {
         <TouchableHighlight activeOpacity={0.5}
                 underlayColor="rgba(0, 0, 0, 0)"
                 style={styles.buttonContainer}
-                onPress={this.onButtonPressed.bind(this, 'login')}>
+                onPress={() => this.props.navigation.navigate('Login')}>
           <Text style = {styles.buttons} >Login</Text>
         </TouchableHighlight> 
         
         <TouchableHighlight activeOpacity={0.5}
                 underlayColor="rgba(0, 0, 0, 0)"
                 style={styles.buttonContainer}
-                onPress={this.onButtonPressed.bind(this, 'signup')}>
+                onPress={() => this.props.navigation.navigate('Signup')}>
            <Text style = {styles.buttons}>Sign Up</Text>
         </TouchableHighlight>
        

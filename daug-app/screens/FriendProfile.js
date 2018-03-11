@@ -1,26 +1,22 @@
 import React from 'react';
 import { StyleSheet, Text, View , ScrollView, Image, TouchableOpacity} from 'react-native';
 
-import COVER from '../assets/Cover.png'
-import PROFILE from '../assets/Profile.png'
+
+
 import { Font } from 'expo';
+import IntroScreen from '../screens/IntroScreen';
 import { SOCIAL_FEED_MOCK_DATA } from '../assets/SOCIAL_FEED_MOCK_DATA';
 
 
-
-export default class ProfileScreen extends React.Component {
+export default class FriendProfile extends React.Component {
 
   static navigationOptions = ({ navigation }) => ({
-    headerTintColor: '#fd746c',
+    title: "Profile",
+    headerTintColor: '#03A9F4',
     headerTitleStyle: {
       fontSize: 20
     },
-    headerLeft: (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginHorizontal: 20 }}>
-       <Text style={{ fontSize: 20}}>Profile</Text>
-     </View>
-
-    )
+   
   
   });
 
@@ -28,21 +24,19 @@ export default class ProfileScreen extends React.Component {
   constructor(props){
     super(props);
 
-    
-   
+    const user = props.navigation.state.params && props.navigation.state.params.user
+  
     state = {
       fontLoaded: false,
     };
     this.state = { 
       fontLoaded: false,
-
-      
+      user: user || SOCIAL_FEED_MOCK_DATA[0].user,
+     
      };
   
   }
  
-
-
   async componentDidMount() {
     await Font.loadAsync({
       'OpenSans-SemiBoldItalic': require('../assets/fonts/OpenSans-SemiBoldItalic.ttf')
@@ -51,12 +45,13 @@ export default class ProfileScreen extends React.Component {
   }
 
 
- 
-  render() {
 
-   
+
+  render() {
+    const { user } = this.state
 
     const { navigate } = this.props.navigation
+
     return (
 
      <ScrollView>
@@ -67,7 +62,7 @@ export default class ProfileScreen extends React.Component {
            <View style = {styles.coverConatainer}>
              <Image 
               style={styles.bannerImage}
-              source={COVER}
+              source={{uri: user.banner}}
               resizeMode='cover'
               />
         </View>
@@ -78,7 +73,7 @@ export default class ProfileScreen extends React.Component {
              
                  <Image
                     style={styles.profileImage}
-                    source={PROFILE}
+                    source={{uri: user.image}}
                     resizeMode='cover'
                    />
                  
@@ -87,31 +82,31 @@ export default class ProfileScreen extends React.Component {
                <View style = {styles.profileDetailStatsContainer}>
                  <View style = {styles.fullStatsContainer}>
                     <View style={styles.profileStat}>
-                      <Text style={styles.statsLabel}>0</Text>
+                      <Text style={styles.statsLabel}>{user.posts ? user.posts.length : '0'}</Text>
                       <Text style={styles.statsLabel}>Posts</Text>
                     </View>
                     <View style={styles.profileStat}>
-                      <Text style={styles.statsLabel}>127896</Text>
+                      <Text style={styles.statsLabel}>{user.followers}</Text>
                       <Text style={styles.statsLabel}>Followers</Text>
                     </View>
                     <View style={styles.profileStat}>
-                      <Text style={styles.statsLabel}>1</Text>
+                      <Text style={styles.statsLabel}>{user.following}</Text>
                       <Text style={styles.statsLabel}>Following</Text>
                     </View>
 
                  
                  </View>
 
+                   {this.state.fontLoaded &&
                  <View style = {styles.editButtonContainer}>
                     <TouchableOpacity
-                      style={styles.toggleButton}
-                      onPress={() => navigate('EditProfile')}
+                      style={styles.followButton}
                      >
-                      <Text style={styles.toggleText}> Edit Profile </Text>
+                      <Text style={styles.toggleText}> Follow </Text>
                      </TouchableOpacity>
 
                  </View>
-
+                  }
                </View>
 
            </View>     
@@ -121,9 +116,9 @@ export default class ProfileScreen extends React.Component {
              <View style = {styles.profileDetailContainer}>
              
                 <View style = {styles.userNameAndDescriptionContainer}>
-                   <Text style = {styles.userName}> Charlier </Text>
+                   <Text style = {styles.userName}> {user.name} </Text>
                   
-                   <Text style = {styles.userDescription}> Best dog lover </Text>
+                   <Text style = {styles.userDescription}>{user.bio} </Text>
                 </View> 
                  
                 
@@ -136,15 +131,6 @@ export default class ProfileScreen extends React.Component {
              
       </View>  
        
-
-         <View style={styles.userFeedViewContainer}>
-            <TouchableOpacity
-                      style={styles.logOutButton}
-                      onPress={() => navigate('Intro')}
-                     >
-                      <Text style={styles.logOutText}> Log Out </Text>
-                     </TouchableOpacity>
-          </View>
        
        </View>  
        
@@ -196,14 +182,17 @@ const styles = StyleSheet.create({
   },
   profileDetailContainer: {
 
+    
   },
   userNameAndDescriptionContainer: {
     padding: 10,
+
     
   },
   userName : {
     marginBottom: 10,
-    fontSize: 18
+    fontSize: 18,
+    fontWeight: 'bold'
   },
   profileAndDescriptionContainer: {
     flexDirection: 'row',
@@ -231,29 +220,24 @@ const styles = StyleSheet.create({
   },
   editProfileText: {
     color: 'black',
-    fontSize: 13
+    fontSize: 15,
+    fontWeight: 'bold'
   },
-  toggleButton: {
+  followButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
-    padding: 5,
-    marginBottom: 4,
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-  logOutButton : {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 200,
-    height: 50,
+    width: 175,
+    height: 40,
     borderRadius: 5,
     backgroundColor: '#28ABEC'
   },
+  
   toggleText: {
     textAlign: 'center',
     fontSize: 16,
     color: 'black',
+    fontWeight: 'bold',
+    fontFamily :'OpenSans-SemiBoldItalic'
   },
 
   logOutText: {
@@ -264,12 +248,14 @@ const styles = StyleSheet.create({
   profileStat: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+
   },
   statsLabel: {
     color: 'black',
-    fontSize: 13,
-    fontWeight: 'normal'
+    fontSize: 14,
+    fontWeight: 'normal',
+    fontWeight: 'bold'
   },
    userDescription : {
 

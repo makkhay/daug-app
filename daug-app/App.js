@@ -1,28 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import IntroScreen from './screens/IntroScreen';
-import SocialFeedScreen from './screens/SocialFeedScreen';
-import ProfileScreen from './screens/ProfileScreen'
-import LoginScreen from './screens/LoginScreen'
+import RootNavigator from './navigation/RootNavigator';
 
-
-
+import Home from './navigation/HomeTabs'
 
 
 
 export default class App extends React.Component {
 
- 
   render() {
    return(
-    <View style={styles.container}>
-     {/* <ProfileScreen/>  */}
-    {/* <SocialFeedScreen/>  */}
-    <IntroScreen/>
-    {/* <Demo/> */}
-    {/* <LoginScreen/> */}
-  </View>
+     <RootNavigator/>
+    //  <Home/>
+  
+  
    );
   }
 }

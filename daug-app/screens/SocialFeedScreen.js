@@ -3,20 +3,40 @@ import { StyleSheet, Text, View, Image,ScrollView, FlatList, TouchableOpacity } 
 
 import { SOCIAL_FEED_MOCK_DATA } from '../assets/SOCIAL_FEED_MOCK_DATA';
 import { Ionicons } from '@expo/vector-icons';
-import ProfileScreen from '../screens/ProfileScreen';
+import { SimpleLineIcons } from '@expo/vector-icons';
+
 import { Font } from 'expo';
 
 
 
 export default class SocialFeedScreen extends React.Component {
+
+  
+
+  static navigationOptions = ({ navigation }) => ({
+   
+    title: 'Daug',
+    headerTintColor: '#03A9F4',
+    headerTitleStyle: {
+      fontSize: 20,
+    },
+  });
+
   constructor(props) {
     super(props);
-    console.log("log 1");
+    
+
+    const {liked } = this.props;
+
     state = {
       fontLoaded: false,
     };
     
-    this.state = { screen: null  };
+    this.state = {
+      commented: false,
+      liked: false,
+
+      };
   }
   async componentDidMount() {
     await Font.loadAsync({
@@ -26,99 +46,115 @@ export default class SocialFeedScreen extends React.Component {
   }
 
 
-  renderProfile= () => {
-    this.setState({ screen: 'ProfileScreen' })
-    console.log("test");
-    
-  }
 
    // this will render one post
    renderItem = ({item}) => {
-    return(
-     
-        <View style = { styles.itemContainer}>
-       
-       
-       <View style={styles.headerContainer}>
-        <Image 
-          source={{uri: item.image}}
-          style={{
+    const { navigate } = this.props.navigation
+    const { liked } = this.state
+
+
+    return(  
+       <View style = { styles.itemContainer} key={item}  >
+         <View style={styles.headerContainer}>
+          <Image 
+            source={{uri: item.image}}
+            style={{
             width: 40,
             height: 40,
             borderRadius: 20,
           }}
         />
-         {this.state.fontLoaded &&
+          
         <View style={styles.nameLocationContainer}>
          <TouchableOpacity style = {styles.nameContainer}
-           onPress={this.renderProfile} 
+            onPress={() => navigate('FriendProfile',{user: item.user} )}
          >
-           <Text style={styles.nameAndLocationContainer}> {item.name} </Text> 
+           <Text style={styles.nameAndLocationContainer}> {item.user["name"]} </Text> 
          </TouchableOpacity> 
-          <Text style={styles.nameAndLocationContainer}> {item.location} </Text>
+            <Text style={styles.nameAndLocationContainer}> {item.location}</Text>
         </View>
-         }
+          
       </View>
         
-
-
-    <Image
-         source = {{uri: item.post["image"]}} 
+    <TouchableOpacity  onPress={() => navigate('Post',{ post: item })}>
+     <View style={styles.postContentContainer}>
+       <Image
+         source = {{uri: item.image}} 
          style = {{
             width: "100%",
             height: 400,
          }}
       />
 
-     <View style = {styles.captionContainer}>
-         <Text> {item.post["caption"]}</Text>
-      </View>
-
-      <View style = {styles.dateContainer}>
-            <Text> {item.post["date"]}</Text>
-        <View style= {styles.iconButtonContainer}>
+      
+        <View style = {styles.captionContainer}>
+         <Text> {item.caption}</Text>
+       </View>
        
+     </View> 
+   </TouchableOpacity>
+  
+      <View style = {styles.dateContainer}>
+         <Text> {item.date}</Text>
+     <TouchableOpacity  onPress={() => navigate('Post',{ post: item })}>
+       <View style= {styles.iconButtonContainer}>
          <Ionicons
-          name="ios-heart-outline"
+          name="ios-chatbubbles-outline"
           size={30}
           color='#085947'
-          style={{paddingRight: 8}}
-          />
-
-        <Ionicons
-         name="ios-chatbubbles-outline"
-         size={30}
-         color='#085947'
-         style={{paddingRight: 8}}
+          style={{paddingRight: 1}}
         />
-
-         <Ionicons
-          name="ios-paper-plane-outline"
-          size={30}
-           color='#085947'
-         />
-     
-        </View>
-     
-      </View>
-   
-        
-  
+        <Text style={styles.postActionText}>{item.comments ? item.comments.length : 0}</Text>
+       </View>  
+      </TouchableOpacity>
+      <TouchableOpacity  onPress={() => {  console.log('like pressed' + liked) 
+        this.setState({ liked: !this.state.liked }); }} >
+         <View style={[styles.postView, { marginRight: 15 }]}>
+           <Ionicons
+             name={liked ? "ios-heart" : "ios-heart-outline"}
+             color={liked ? 'red' : 'black'} size={30} />
+             <Text style={styles.postButtonText}>{item.likes}</Text>
+         </View>
+     </TouchableOpacity> 
+    </View>
    </View> 
      )
-    
+   
    }
-
 
   render() {
  
-    const { screen } = this.state
+    const { navigate } = this.props.navigation
 
-    if (screen === 'ProfileScreen') {
-      return <ProfileScreen />;
-    }
 
-    return (
+    return ( 
+
+     
+     <View style={styles.mainContent}  >
+        {this.state.fontLoaded &&
+      <View style={styles.createPostContainer}>
+        <TouchableOpacity onPress={() => navigate('CreatePost', { item: SOCIAL_FEED_MOCK_DATA[0] })} style={styles.createPostLabelContainer}>
+          <Text style={styles.createPostLabel}>Create Post</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.addPhotoIcon}>
+          <Ionicons
+            name='md-photos'
+            size={30}
+            color='#085947'
+            style={{paddingRight: 1}}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost', { item: SOCIAL_FEED_MOCK_DATA[0] })}>
+          <Ionicons
+            name='md-share'
+            size={30}
+            color='#085947'
+            style={{paddingRight: 1}}
+          />
+        </TouchableOpacity>
+      </View>  
+      } 
+     
 
     <ScrollView style = {styles.scrollContainer}>  
     
@@ -131,11 +167,38 @@ export default class SocialFeedScreen extends React.Component {
         
       />
     </ScrollView>  
+    </View>
+  
     );
   }
 }
 
 const styles = StyleSheet.create({
+  mainContent: {
+    flex: 1,
+
+  },
+  createPostContainer: {
+    flexDirection: 'row',
+    height: 50,
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+
+  },createPostLabelContainer: {
+    flex: 10,
+    marginLeft: 20
+  },
+  createPostLabel: {
+    fontSize: 18,
+    color: '#03A9F4',
+    fontWeight: 'bold',
+    fontFamily: 'OpenSans-SemiBoldItalic'
+
+  },addPhotoIcon: {
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingRight: 20,
+  },
   scrollContainer : {
     flexGrow: 1,
   },
@@ -150,7 +213,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection : 'row',
-    paddingTop: 40,
+    paddingTop: 10,
     justifyContent: 'flex-start',
     alignItems: 'center', 
     
@@ -160,32 +223,65 @@ const styles = StyleSheet.create({
    nameLocationContainer : {
     paddingLeft: 5,
 
+
    } ,
    
   nameAndLocationContainer:{
     flexDirection: 'column',
     justifyContent: 'space-around',
-    fontFamily: 'OpenSans-SemiBoldItalic'
+    fontWeight: 'bold',
+    fontSize: 14
+    
+
     
 
   },
   
   captionContainer: {
+    backgroundColor: '#f9f9f9',
     paddingTop: 5,
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    marginBottom: 10,
+
   },
 
   dateContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    
   },
   iconButtonContainer : {
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: 160
+    
   },
   list: {
     flex: 1,
   },
   
+  postButtonText: {
+    marginLeft: 10,
+    color: '#44484B',
+    fontSize: 15,
+    
 
+
+  },
+  postContentContainer: {
+    backgroundColor: '#f9f9f9',
+
+  },
+  postView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  postInteractiveButtonContainer: {
+    marginLeft: 0,
+    marginRight: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

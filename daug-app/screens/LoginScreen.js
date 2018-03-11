@@ -12,6 +12,15 @@ import { Font } from 'expo';
 
 
 export default class LoginScreen extends React.Component {
+
+  static navigationOptions = {
+  
+    title: 'Login',
+    headerStyle : { backgroundColor: '#03A9F4', borderBottomWidth : 0},
+    headerTintColor: 'white',
+    headerTittleStyle: {color: '#03A9F4', fontSize: 32}
+  };
+
   constructor(props) {
     super(props);
 
@@ -47,7 +56,8 @@ export default class LoginScreen extends React.Component {
       )
     }
     else if(this.loginValid){
-      this.setState({ screen: 'SocialFeedScreen' });
+     
+      this.props.navigation.navigate('Home')
 
       Alert.alert(
         'Success! Your login: ',
@@ -147,10 +157,9 @@ const styles = StyleSheet.create({
 
   inputFieldContainer: {
     flexDirection: 'column',
-    padding: 10,
-    marginTop: 80,
+    marginTop: 8,
     alignItems: 'center',
-    marginVertical: 20
+    marginVertical: 160
     
    
     

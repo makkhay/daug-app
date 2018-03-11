@@ -6,6 +6,13 @@ import { MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 import IntroScreen from '../screens/IntroScreen';
 
 export default class SignupScreen extends React.Component {
+
+  static navigationOptions = {
+    title: 'Signup',
+    headerStyle : { backgroundColor: '#03A9F4', borderBottomWidth : 0},
+    headerTintColor: 'white',
+    headerTittleStyle: {color: '#03A9F4', fontSize: 32}
+  };
  
   constructor(props) {
     super(props);
@@ -32,7 +39,7 @@ export default class SignupScreen extends React.Component {
 
   signUpButtonPressed(){
     const { name, email, password } = this.state;
-    this.setState({ screen: 'IntroScreen' });
+    this.props.navigation.navigate('Home')
 
     return (
       Alert.alert(
@@ -154,9 +161,9 @@ const styles = StyleSheet.create({
   inputFieldContainer: {
     flexDirection: 'column',
     alignItems: 'center',
-    marginVertical: 20,
-    marginTop: 15,
-    padding: 10,
+    marginVertical: 273,
+    marginTop: 85,
+
 
     
   },
