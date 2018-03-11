@@ -62,6 +62,35 @@ Social feed screen based on Facebook.
 
 ![working_gif_assignment_3](https://i.imgur.com/A1KwoPU.gif)
 
+## Assignment #2
+
+### Objectives
+
+- Learn how to build navigation for Daug app using [React Navigation](https://reactnavigation.org/)
+- Learn mobile design patterns for navigation & screen layouts
+- Learn how to quickly build RN screens and hook them up using navigation
+
+### TODO
+
+- [x] Understand the 3 main navigation patterns for mobile apps:
+  - [x] [StackNavigator](https://reactnavigation.org/docs/hello-react-navigation.html#creating-a-stacknavigator)
+  - [x] [TabNavigator](https://reactnavigation.org/docs/tab-based-navigation.html)
+  - [x] [DrawerNavigator](https://reactnavigation.org/docs/drawer-based-navigation.html)
+- [x] Setup a **IntroStack** (using StackNavigator) for the Intro Screen (root), Login Screen (push) & Sign Up Screen (push)
+- [x] Setup a **HomeTabs** (using TabNavigator) for the Social Feed Screen (default) and Profile Screen
+- [x] Setup a **RootNavigator** (using StackNavigator) with the **IntroStack** & **HomeTabs** with `mode: "modal"`
+- [x] Design & build an Edit Profile Screen
+- [x] Setup a **ProfileStack** (using StackNavigator) for the Profile Screen (root), Post Details Screen (push) & Edit Profile Screen (modal) with mode: "modal" and custom RNE header component
+- [x] Design & build a Post Details Screen
+- [x] Design & build a Create Post Screen
+- [x] Setup a **SocialStack** (using StackNavigator) for the Social Feed Screen (root), Post Details Screen (push) & Create Post Screen (modal) with mode: "modal" and custom RNE header component
+- [ ] :star: **Bonus:** Display Posts on ProfileScreen
+- [ ] :star: **Bonus:** Setup a **HomeNavigator**(using DrawerNavigator) with the **HomeTabs** (as root) and update **RootNavigator** to use **HomeNavigator** instead of **HomeTabs**
+- [x] Add working gif of app to `README.MD`
+
+### Demo
+![assignment_2](https://i.imgur.com/XheHhg5.gif)
+
 
 
 ## Problems?
