@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image,  ScrollView } from 'react-native';
 import { Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
+import { SOCIAL_FEED_MOCK_DATA } from '../assets/SOCIAL_FEED_MOCK_DATA';
 
 
 export default class PostScreen extends React.Component {
@@ -16,12 +17,14 @@ export default class PostScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    const { post } = props.navigation.state.params
+    // const { post } = props.navigation.state.params
+    const post = props.navigation.state.params && props.navigation.state.params.post
 
     this.state = {
       item: post,
       commented: false,
-      liked: false
+      liked: false,
+      post: post || SOCIAL_FEED_MOCK_DATA[0].post,
     };
   }
 
@@ -59,30 +62,30 @@ export default class PostScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation
-    const { item, commented, liked } = this.state
+    const { post, commented, item,liked } = this.state
 
 
     return (
       <ScrollView style={styles.mainContainer}>
         <View style={styles.postContainer} key={item}>
           <View style={styles.postHeaderContainer}>
-              <Image source={{ uri: item.user.image }} style={styles.avatar} />
+              <Image source={{ uri: item.user.profile_image}} style={styles.avatar} />
             <View style={styles.postUsernameLocationContainer}>
               <TouchableOpacity
-                style={[styles.postUsernameView, item.location && { marginTop: 10 }]}
+                style={[styles.postUsernameView, post.location && { marginTop: 10 }]}
                 onPress={() => navigate('FriendProfile', { user: item.user })}
               >
                 <Text style={styles.nameLabel}>{item.user.name}</Text>
               </TouchableOpacity>
                 <View style={styles.postLocationView}>
-                  <Text style={styles.locationLabel}>{item.location}</Text>
+                  <Text style={styles.locationLabel}>SF</Text>
                 </View>
             </View>
           </View>
           <View>
             <View style={styles.postContentContainer}>
               <Image source={{ uri: item.image }} style={styles.postImage} resizeMode="cover" />
-              <Text style={styles.postCaption}>{item.caption}</Text>
+              <Text style={styles.postCaption}>{item.description}</Text>
             </View>
           </View>
           <View style={styles.postBottomContainer}>

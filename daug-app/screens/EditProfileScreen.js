@@ -1,6 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Alert, TextInput, Platform } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Alert, TextInput, Platform, SafeAreaView , DeviceEventEmitter, ImageEditor} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import {Header} from 'react-native-elements';
+import {getUserId} from '../util/helper';
+import { ImagePicker } from 'expo';
 
 
 export default class EditProfileScreen extends React.Component {
@@ -8,74 +11,265 @@ export default class EditProfileScreen extends React.Component {
     super(props);
 
     this.state ={
-      name: 'Charlier',
-      bio: "Best Dog lover",
-      email: 'dog@gmail.com'
+      name: '',
+      bio: '',
+      profile: null,
+      isProfileLoading: true,
+      image: null,
+      
     }
   }  
-  static navigationOptions = ({ navigation }) => ({
-
- 
-    title: 'Edit Profile',
-    headerTintColor: '#03A9F4',
-    headerTitleStyle: {
-      fontSize: 20,
-      padding: 8,
-      justifyContent: 'center',   
-      alignItems: Platform.OS === 'android' ? 'center' : 'center',
 
 
-    
-    },
 
-    headerRight: (
-      <TouchableOpacity  onPress={() => {
+  async componentDidMount() {
+
+    getUserId()
+    .then(res => {
+      this.setState({ userId: res })
+      this.state.profile === null && this.fetchProfile()
+    })
+    .catch(err => {
+      alert("An error occurred") 
+    });
+
+
+  }
+
+  async fetchProfile() {
+
+    try {
+      let response = await fetch(`https://daug-app.herokuapp.com/api/users/${this.state.userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+      });
+
+      let responseJSON = null
+
+      if (response.status === 200) {
+
+        responseJSON = await response.json();
+        console.log(responseJSON)
+        this.setState({
+          isProfileLoading: false,
+          profile: responseJSON,
+        })
+        
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ errors: responseJSON.errors })
+
+        Alert.alert('Your id is : ', ` ${error}!  ${this.state.userId}`  )
+       
+        
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, response: error })
+
+      console.log(error)
+
+
+    }
+  }
+
+  _renderProfileEmail(name) {
+    if(name) {
+      return (
+        <Text style={styles.inputLabel}>{name}</Text>
+      )
+    }
+  }
+
+  _renderProfileImage(image) {
+    if(image) {
+      return (
+        <Image
+        style={styles.profileImage}
+        source={{ uri: image }}
+      />      
+    )
+    }
+     // if image is null
+     else {
+      return (
+        <Image 
+        style={styles.profileImage}
+        source={COVER}
+        resizeMode='cover'
+        />
+
+      )
+    }
+  }
+
+  
+
+
+  async submitProfile() {
+    this.setState({ isLoading: true })
+
+    const { name, bio, image } = this.state
+
+    var details = {
+      'name': name,
+      'bio': bio,
+      'image': image
+
+    };
+
+    var formBody = [];
+
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+
+    formBody = formBody.join("&");
+
+    try {
+      let response = await fetch(`https://daug-app.herokuapp.com/api/users/${this.state.userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+      });
+
+      let responseJSON = null
+
+      if (response.status === 200) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false })
+
         Alert.alert(
-          'Success!',
-          `Your Profile has edited`,
+          'Profile updated!',
+          '',
           [
-            { text: "OK", onPress: () => navigation.navigate('Profile') }
+            { text: "Dismiss", onPress: () => {
+              DeviceEventEmitter.emit('user_profile_updated', {})
+              this.props.navigation.goBack()
+            }}
           ],
           { cancelable: false }
         )
-      }}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-          <Text style={{ fontSize: 15 , fontWeight: 'bold'}}>Save</Text>
-        </View>
-      </TouchableOpacity>
-    ),
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
 
-    headerLeft: (
-      <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{ fontSize: 15, fontWeight: 'bold'}}>Cancel</Text>
-        </View>
-      </TouchableOpacity>
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false, errors: responseJSON.errors })
+
+        Alert.alert('Unable to update profile!', `${error}`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, response: error })
+
+      Alert.alert('Unable to update profile!', `${error}`)
+    }
+  }
+
+
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (result.cancelled) {
+      console.log('got here');
+      return;
+    }
+
+    let resizedUri = await new Promise((resolve, reject) => {
+      ImageEditor.cropImage(result.uri,
+        {
+          offset: { x: 0, y: 0 },
+          size: { width: result.width, height: result.height },
+          displaySize: { width: 50, height: 50 },
+          resizeMode: 'contain',
+        },
+        (uri) => resolve(uri),
+        () => reject(),
+      );
+    });
+
+    this.setState({ image: resizedUri });
+  };
+
+
+
+  _showAlert(){
+    Alert.alert(
+      'Alert!',
+      `You can't edit your email `,
+      [
+        { text: "OK"}
+      ],
+      { cancelable: false }
     )
-  });
-
+  }
 
   render() {
-    const { name,bio, email} = this.state
+    const { name,bio, profile, isProfileLoading } = this.state
+
+
    return(
+     
     <View style={styles.mainContainer}>
+     <SafeAreaView style={{ backgroundColor: '#FAFAFA', }}>
+    <Header
+      leftComponent={
+        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+          <Text style={styles.navBar}>Cancel</Text>
+        </TouchableOpacity>
+      }
+      centerComponent={{
+        text: 'Create Post',
+        style: {
+          color: '#2F80ED', fontSize: 20,
+          fontWeight: 'bold',
+        }
+      }}
+      rightComponent={
+        <TouchableOpacity  
+        onPress={this.submitProfile.bind(this)}>
+          <Text style={styles.navBar}>Save</Text>
+        </TouchableOpacity>
+      }
+      outerContainerStyles={{ backgroundColor: '#FAFAFA' }}
+    />
+  </SafeAreaView>
+
+       { !isProfileLoading &&
        <View style={styles.photoContainer}>
-            <Image
-              style={styles.profileImage}
-              source={{ uri: 'https://thumbs.dreamstime.com/b/dalmatian-puppy-portrait-10524552.jpg' }}
-              resizeMode='cover'
-            />
-            <TouchableOpacity>
+           
+               {this._renderProfileImage(profile["profile_image"])}
+
+            <TouchableOpacity   onPress={this._pickImage}>
               <Text style={styles.changePhotoLabel}>Change Photo</Text>
             </TouchableOpacity>
           </View>
+       }
+          
           <View style={styles.detailsContainer}>
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Name</Text>
               <TextInput
                 value={name}
                 onChangeText={name => this.setState({ name })}
-                placeholder="Name"
+                placeholder="Type here to edit"
                 placeholderTextColor="#aaaaaa"
                 autoCapitalize="words"
                 style={styles.inputStyle}
@@ -87,7 +281,7 @@ export default class EditProfileScreen extends React.Component {
               <TextInput
                 value={bio}
                 onChangeText={bio => this.setState({ bio })}
-                placeholder="Bio"
+                placeholder="Type here to edit"
                 placeholderTextColor="#aaaaaa"
                 autoCapitalize="sentences"
                 style={styles.inputStyle}
@@ -96,23 +290,20 @@ export default class EditProfileScreen extends React.Component {
             </View>
           </View>
           <Text style={styles.sectionHeaderText}>PRIVATE INFORMATION</Text>
+         
+          <TouchableOpacity onPress={this._showAlert}>
           <View style={styles.privateDetailsContainer}>
+          { !isProfileLoading &&
             <View style={[styles.inputContainer, { marginVertical: 10 }]}>
               <Text style={styles.inputLabel}>Email</Text>
-              <TextInput
-                value={email}
-                onChangeText={email => this.setState({ email})}
-                placeholder="Email"
-                placeholderTextColor="#aaaaaa"
-                autoCapitalize="none"
-                style={styles.inputStyle}
-                containerStyle={{ width: '100%', borderColor: '#aaaaaa' }}
-              />
+              {this._renderProfileEmail(profile["email"])}
             </View>
+          }
           </View>
-
+          </TouchableOpacity>
+       
     </View>
-
+       
    );
   }
 }
@@ -151,12 +342,12 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 16,
-    color: '#aaaaaa',
+    color: 'black',
   },
   inputStyle: {
     width: '100%',
     borderColor: '#aaaaaa',
-    fontSize: 18,
+    fontSize: 14,
     color: 'black',
   },
   sectionHeaderText: {
@@ -167,6 +358,9 @@ const styles = StyleSheet.create({
   privateDetailsContainer: {
     marginVertical: 10,
     backgroundColor: 'white'
+  },
+   navBar: {
+  fontWeight : 'bold'
   }
   
 });

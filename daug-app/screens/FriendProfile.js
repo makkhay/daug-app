@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View , ScrollView, Image, TouchableOpacity} from 'react-native';
 
 
-
+import COVER from '../assets/Cover.png'
 import { Font } from 'expo';
 import IntroScreen from '../screens/IntroScreen';
 import { SOCIAL_FEED_MOCK_DATA } from '../assets/SOCIAL_FEED_MOCK_DATA';
@@ -62,7 +62,7 @@ export default class FriendProfile extends React.Component {
            <View style = {styles.coverConatainer}>
              <Image 
               style={styles.bannerImage}
-              source={{uri: user.banner}}
+              source={COVER}
               resizeMode='cover'
               />
         </View>
@@ -73,7 +73,7 @@ export default class FriendProfile extends React.Component {
              
                  <Image
                     style={styles.profileImage}
-                    source={{uri: user.image}}
+                    source={{uri: user.profile_image}}
                     resizeMode='cover'
                    />
                  
@@ -86,11 +86,11 @@ export default class FriendProfile extends React.Component {
                       <Text style={styles.statsLabel}>Posts</Text>
                     </View>
                     <View style={styles.profileStat}>
-                      <Text style={styles.statsLabel}>{user.followers}</Text>
+                      <Text style={styles.statsLabel}>345</Text>
                       <Text style={styles.statsLabel}>Followers</Text>
                     </View>
                     <View style={styles.profileStat}>
-                      <Text style={styles.statsLabel}>{user.following}</Text>
+                      <Text style={styles.statsLabel}>23</Text>
                       <Text style={styles.statsLabel}>Following</Text>
                     </View>
 

@@ -20,9 +20,6 @@ const SocialStack = StackNavigator({
     screen: FriendProfile
   },
 
-  CreatePost: {
-    screen : CreatePost
-  },
 
 });
 

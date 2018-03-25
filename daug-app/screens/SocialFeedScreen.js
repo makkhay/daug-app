@@ -1,17 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image,ScrollView, FlatList, TouchableOpacity } from 'react-native';
-
 import { SOCIAL_FEED_MOCK_DATA } from '../assets/SOCIAL_FEED_MOCK_DATA';
 import { Ionicons } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
-
 import { Font } from 'expo';
-
-
+import COVER from '../assets/Cover.png'
 
 export default class SocialFeedScreen extends React.Component {
 
-  
 
   static navigationOptions = ({ navigation }) => ({
    
@@ -35,6 +31,8 @@ export default class SocialFeedScreen extends React.Component {
     this.state = {
       commented: false,
       liked: false,
+      isFeedLoading: true,
+      posts: null,
 
       };
   }
@@ -43,60 +41,147 @@ export default class SocialFeedScreen extends React.Component {
       'OpenSans-SemiBoldItalic': require('../assets/fonts/OpenSans-SemiBoldItalic.ttf')
     });
     this.setState({ fontLoaded: true });
+    this.getFeed();
+
   }
 
 
 
-   // this will render one post
-   renderItem = ({item}) => {
-    const { navigate } = this.props.navigation
-    const { liked } = this.state
+   async getFeed() {
+    try {
+      let response = await fetch(`https://daug-app.herokuapp.com/api/feed`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+      });
 
+      let responseJSON = null
 
-    return(  
-       <View style = { styles.itemContainer} key={item}  >
-         <View style={styles.headerContainer}>
-          <Image 
-            source={{uri: item.image}}
-            style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
+      if (response.status === 200) {
+
+        responseJSON = await response.json();
+        console.log(responseJSON)
+
+        //save the posts 
+        this.setState({
+          isFeedLoading: false,
+          posts: responseJSON,
+        })
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ errors: responseJSON.errors })
+        Alert.alert('Unable to get your feed', `Reason.. ${error}!`)
+      }
+    } catch (error) {
+        this.setState({ isLoading: false, response: error })
+  
+        console.log(error)
+  
+        Alert.alert('Unable to get the feed. Please try again later')
+      }
+    }
+
+    _renderImage = (image) => {
+      // render big image
+      if(image){
+        return(
+          <Image
+          source = {{uri: image}} 
+          style = {{
+             width: "100%",
+             height: 400,
           }}
-        />
-          
-        <View style={styles.nameLocationContainer}>
-         <TouchableOpacity style = {styles.nameContainer}
-            onPress={() => navigate('FriendProfile',{user: item.user} )}
-         >
-           <Text style={styles.nameAndLocationContainer}> {item.user["name"]} </Text> 
-         </TouchableOpacity> 
-            <Text style={styles.nameAndLocationContainer}> {item.location}</Text>
-        </View>
-          
-      </View>
-        
-    <TouchableOpacity  onPress={() => navigate('Post',{ post: item })}>
-     <View style={styles.postContentContainer}>
-       <Image
-         source = {{uri: item.image}} 
+       />
+       )
+      }
+
+    }
+
+    _renderProfileImage = (image) =>{
+      // render profile image
+      if(image){
+        return(
+          <Image
+          source = {{uri: image}} 
+          style = {{
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+          }}
+       /> 
+      )
+      }  // if image is null
+      else {
+       return (
+         <Image 
          style = {{
-            width: "100%",
-            height: 400,
-         }}
-      />
+          width: 30,
+          height: 30,
+          borderRadius: 15,
+        }}
+         source={COVER}
+         resizeMode='cover'
+         />
+ 
+       )
+     }
+
+
+    }
+
+    _renderDescription = (description) => {
+     // render Description 
+     if(description){
+       return( 
+          <Text> {description}</Text>
+
+       )
+     }
+
+    }
+
+    _renderItem = ({item: post}) => {
+      const { liked } = this.state
+      const { navigate } = this.props.navigation
 
       
-        <View style = {styles.captionContainer}>
-         <Text> {item.caption}</Text>
-       </View>
+      return (
+     <View style = { styles.itemContainer}>
+        <View style={styles.headerContainer}>
+        {this._renderProfileImage(post.user.profile_image)}  
        
+        <View style={styles.nameLocationContainer}>
+         <TouchableOpacity style = {styles.nameContainer}
+            onPress={() => navigate('FriendProfile',{user: post.user} )}
+         >
+         <Text style={styles.nameAndLocationContainer}> {post.user.name} </Text> 
+         </TouchableOpacity> 
+            <Text style={styles.nameAndLocationContainer}>SF</Text>
+        </View>
+      </View>
+        
+    <TouchableOpacity  onPress={() => navigate('Post',{ post: post })}>
+     <View style={styles.postContentContainer}>
+    
+     {this._renderImage(post.image)}
+     
+  
      </View> 
    </TouchableOpacity>
+
+   <View style ={styles.descriptionContainer}>
+   {this._renderDescription(post.description)}
+   </View>
   
-      <View style = {styles.dateContainer}>
-         <Text> {item.date}</Text>
-     <TouchableOpacity  onPress={() => navigate('Post',{ post: item })}>
+   <View style = {styles.dateContainer}>
+     
+         <Text> 2 hr</Text>
+
        <View style= {styles.iconButtonContainer}>
          <Ionicons
           name="ios-chatbubbles-outline"
@@ -104,28 +189,34 @@ export default class SocialFeedScreen extends React.Component {
           color='#085947'
           style={{paddingRight: 1}}
         />
-        <Text style={styles.postActionText}>{item.comments ? item.comments.length : 0}</Text>
+        <Text style={styles.postActionText}>{post.comments ? post.comments.length : 0}</Text>
        </View>  
-      </TouchableOpacity>
+
       <TouchableOpacity  onPress={() => {  console.log('like pressed' + liked) 
         this.setState({ liked: !this.state.liked }); }} >
          <View style={[styles.postView, { marginRight: 15 }]}>
            <Ionicons
              name={liked ? "ios-heart" : "ios-heart-outline"}
              color={liked ? 'red' : 'black'} size={30} />
-             <Text style={styles.postButtonText}>{item.likes}</Text>
+             <Text style={styles.postButtonText}>{post.likes}</Text>
          </View>
      </TouchableOpacity> 
     </View>
-   </View> 
-     )
-   
-   }
+ 
+ </View> 
+ 
+  )
+     
+ }
+
+
+
 
   render() {
  
     const { navigate } = this.props.navigation
-
+    const { isFeedLoading, posts} = this.state;
+   
 
     return ( 
 
@@ -136,14 +227,14 @@ export default class SocialFeedScreen extends React.Component {
         <TouchableOpacity onPress={() => navigate('CreatePost', { item: SOCIAL_FEED_MOCK_DATA[0] })} style={styles.createPostLabelContainer}>
           <Text style={styles.createPostLabel}>Create Post</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.addPhotoIcon}>
+        {/* <TouchableOpacity style={styles.addPhotoIcon}>
           <Ionicons
             name='md-photos'
             size={30}
             color='#085947'
             style={{paddingRight: 1}}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.addPhotoIcon} onPress={() => navigate('CreatePost', { item: SOCIAL_FEED_MOCK_DATA[0] })}>
           <Ionicons
             name='md-share'
@@ -157,15 +248,15 @@ export default class SocialFeedScreen extends React.Component {
      
 
     <ScrollView style = {styles.scrollContainer}>  
-    
+       {!isFeedLoading && 
        <FlatList 
             style={styles.list}
-            data = {SOCIAL_FEED_MOCK_DATA}
+            data = {posts}
             style={styles.container}
-            keyExtractor={(item, index) => index}
-            renderItem={(item) => this.renderItem(item)}
-        
-      />
+            keyExtractor={(item, post) => post}
+            renderItem={({item}) => this._renderItem({item})}
+         />
+       }
     </ScrollView>  
     </View>
   
@@ -283,5 +374,19 @@ const styles = StyleSheet.create({
     marginRight: 4,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  descriptionContainer: {
+    paddingTop: 5,
+    justifyContent: 'space-around',
+
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: '#aaaaaa',
+    marginTop: -25
   },
 });

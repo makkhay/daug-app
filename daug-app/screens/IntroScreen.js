@@ -36,27 +36,37 @@ export default class IntroScreen extends React.Component {
       'OpenSans-SemiBoldItalic': require('../assets/fonts/OpenSans-SemiBoldItalic.ttf')
     });
     this.setState({ fontLoaded: true });
+    this.pingServer()
+
   }
 
+  async pingServer() {
+    // Check server status
+    // Simple GET request to /api
+    try {
+      const response = await fetch(`https://daug-app.herokuapp.com/api`, {
+        method: 'GET'
+      });
+      const responseJSON = await response.json();
 
-  onButtonPressed(type) {
-    this.setState({ screen: type })
-   
+      if (response.status === 200) {
+        console.log(responseJSON.message);
+        console.log('Server up and running');
+      } else {
+        const error = responseJSON.message
+
+        console.log("Server request failed " + error);
+      }
+    } catch (error) {
+      console.log("Server is down " + error);
+    }
   }
 
 
   render(){
     const { screen } = this.state
     
-    if(screen == 'login'){
-      return <LoginScreen/>
-    } else if (screen === 'profile'){
-      return <ProfileScreen/> 
-    } else if (screen === 'signup'){
-      return <SignupScreen/> 
-    } else if (screen === 'socialFeed'){  
-      return <SocialFeedScreen/>
-    } else {
+ 
     return (
       <View style = { styles.mainContainer}> 
         {this.state.fontLoaded &&
@@ -94,7 +104,6 @@ export default class IntroScreen extends React.Component {
     );
   }
  }
-}
 
 
 

@@ -4,6 +4,7 @@ import { LinearGradient, Font } from 'expo';
 import { Button, Input } from 'react-native-elements';
 import { MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 import IntroScreen from '../screens/IntroScreen';
+import { onSignIn } from '../util/helper';
 
 export default class SignupScreen extends React.Component {
 
@@ -24,6 +25,7 @@ export default class SignupScreen extends React.Component {
       name: '',
       email: '',
       password: '',
+      isLoading: false,
       screen: null,
     };
   }
@@ -33,25 +35,77 @@ export default class SignupScreen extends React.Component {
       'OpenSans-SemiBoldItalic': require('../assets/fonts/OpenSans-SemiBoldItalic.ttf')
     });
     this.setState({ fontLoaded: true });
+
   }
 
 
+  async signupButtonPressed() {
 
-  signUpButtonPressed(){
-    const { name, email, password } = this.state;
-    this.props.navigation.navigate('Home')
+    this.setState({ isLoading: true })
 
-    return (
-      Alert.alert(
-        'Success! Your login: ',
-        `Name: ${name}\nEmail: ${email}\nPassword: ${password}`,
-        [
-          { text: 'OK', onPress: () => console.log('OK Pressed') }
-        ],
-        { cancelable: false }
-      )
-    )
+    const { name, email, password } = this.state
+    const { navigate } = this.props.navigation
 
+    var details = {
+      'name': name,
+      'email': email,
+      'password': password
+    };
+
+    var formBody = [];
+
+
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+
+    formBody = formBody.join("&");
+
+    try {
+      let response = await fetch(`https://daug-app.herokuapp.com/auth/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+      });
+
+      let responseJSON = null
+
+      if (response.status === 201) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false })
+        Alert.alert(
+          'Signed Up!',
+          'You have successfully signed up!',
+          [
+            { text: "Continue", onPress: () => onSignIn(responseJSON.user.id).then(() => navigate("Home") ) }
+            
+          ],
+          { cancelable: false }
+        )
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false, errors: responseJSON.errors })
+        Alert.alert('Sign up failed!', `Unable to signup.. ${error}!`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, response: error })
+
+      console.log(error)
+
+      Alert.alert('Sign up failed!', 'Unable to Signup. Please try again later')
+    }
   }
 
   loginValid() {
@@ -63,10 +117,9 @@ export default class SignupScreen extends React.Component {
 
   render() {
     const { screen } = this.state
+    const { name, email, password } = this.state
 
-    if (screen === 'IntroScreen') {
-      return <IntroScreen />;
-    }
+    
     return (
       <View style={styles.mainContainer}>
          {this.state.fontLoaded &&
@@ -140,10 +193,9 @@ export default class SignupScreen extends React.Component {
         <TouchableOpacity
           style={[styles.toggleButton, !this.loginValid() && { backgroundColor: 'black'}] }
           disabled={!this.loginValid()}
-          onPress={this.signUpButtonPressed.bind(this)}>
+          onPress= { () => {this.signupButtonPressed() ,console.log(name + email)}  } >
          <Text style={styles.toggleText}> Sign Up </Text>
        </TouchableOpacity>
-
         </View>
          } 
       </View>

@@ -14,9 +14,9 @@ const ProfileStack = StackNavigator({
     screen: PostScreen
   },
 
-  EditProfile: {
-    screen: EditProfileScreen
-  }, 
+  // EditProfile: {
+  //   screen: EditProfileScreen
+  // }, 
   
 
 });

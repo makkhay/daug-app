@@ -9,6 +9,7 @@ import { Button, Input } from 'react-native-elements';
 import { MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 
 import { Font } from 'expo';
+import {onSignIn} from '../util/helper';
 
 
 export default class LoginScreen extends React.Component {
@@ -35,41 +36,78 @@ export default class LoginScreen extends React.Component {
   }
 
   async componentDidMount() {
+    
     await Font.loadAsync({
       'OpenSans-SemiBoldItalic': require('../assets/fonts/OpenSans-SemiBoldItalic.ttf')
     });
     this.setState({ fontLoaded: true });
   }
 
+  async loginButtonPressed() {
 
-  loginButtonPressed() {
-    const { email, password } = this.state;
-    
-    if (email.length === 0 && password.length === 0) {
-      Alert.alert(
-        'Error!',
-        `Your email or password is empty `,
-        [
-          { text: 'OK', onPress: () => console.log('OK Pressed') }
-        ],
-        { cancelable: false }
-      )
+    this.setState({ isLoading: true })
+
+    const { email, password } = this.state
+    const { navigate } = this.props.navigation
+
+    var details = {
+      'email': email,
+      'password': password
+    };
+
+    var formBody = [];
+
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+
+      formBody.push(encodedKey + "=" + encodedValue);
     }
-    else if(this.loginValid){
-     
-      this.props.navigation.navigate('Home')
 
-      Alert.alert(
-        'Success! Your login: ',
-        `Email: ${email}  \nPassword: ${password}`,
-        [
-          { text: 'OK', onPress: () => console.log('OK Pressed') }
-        ],
-        { cancelable: false }
-      )
-    
+    formBody = formBody.join("&");
+
+    try {
+      let response = await fetch(`https://daug-app.herokuapp.com/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+      });
+
+      let responseJSON = null
+
+      if (response.status === 201) {
+        responseJSON = await response.json();
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false })
+        Alert.alert(
+          'Logged In!',
+          'You have successfully logged in!',
+          [
+            { text: "Continue", onPress: () => onSignIn(responseJSON.user.id).then(() =>navigate("Home")) }
+          ],
+          { cancelable: false }
+        )
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ isLoading: false, errors: responseJSON.errors })
+
+        Alert.alert('Log in failed!', `Unable to login.. ${error}!`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, error })
+
+      Alert.alert('Log in failed!', 'Unable to login. Please try again later')
     }
   }
+
   loginValid() {
     const {  email, password } = this.state
 
@@ -80,10 +118,10 @@ export default class LoginScreen extends React.Component {
 
   render() {
     const { screen } = this.state
+    const { isLoading, errors } = this.state
+    const { email, password } = this.state;
 
-    if (screen === 'SocialFeedScreen') {
-      return <SocialFeedScreen />;
-    }
+   
 
     return (
 
@@ -98,8 +136,8 @@ export default class LoginScreen extends React.Component {
 	          autoCapitalize="none"
           	autoCorrect={false}
             returnKeyType="next"
-            value={this.state.email}
-            onChangeText={(text) => this.setState({email: text})}
+            value={email}
+            onChangeText={email => this.setState({email})}
            	containerStyle={styles.textInput}
              leftIcon={
               <MaterialCommunityIcons
@@ -120,8 +158,8 @@ export default class LoginScreen extends React.Component {
 	          autoCapitalize="none"
           	autoCorrect={false}
             returnKeyType="next"
-            value={this.state.password}
-            onChangeText={(text) => this.setState({password: text})}
+            value={password}
+            onChangeText={password => this.setState({password})}
            	containerStyle={styles.textInput}
              leftIcon={
               <MaterialCommunityIcons
@@ -134,9 +172,11 @@ export default class LoginScreen extends React.Component {
            />
 
         <TouchableOpacity
+          loading={isLoading}
           style={[styles.toggleButton, !this.loginValid() && { backgroundColor: 'black'}] }
           onPress={this.loginButtonPressed.bind(this)}>
          <Text style={styles.toggleText}> Login </Text>
+        
        </TouchableOpacity>
 
         </View>
