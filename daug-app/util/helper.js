@@ -1,9 +1,5 @@
 import { AsyncStorage, Platform, Alert } from 'react-native';
 
-
-
-
-
 // Auth navigation helpers
 export const USER_KEY = "secret-user-key-123-xyz";
 export const USER_ID = 'some-random-user-id-123-xyz'
