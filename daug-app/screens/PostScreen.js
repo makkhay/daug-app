@@ -18,13 +18,13 @@ export default class PostScreen extends React.Component {
   constructor(props) {
     super(props);
     // const { post } = props.navigation.state.params
-    const post = props.navigation.state.params && props.navigation.state.params.post
+    const user = props.navigation.state.params && props.navigation.state.params.user
 
     this.state = {
-      item: post,
+      item: user,
       commented: false,
       liked: false,
-      post: post || SOCIAL_FEED_MOCK_DATA[0].post,
+      user: user || SOCIAL_FEED_MOCK_DATA[0].user,
     };
   }
 
@@ -62,7 +62,7 @@ export default class PostScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation
-    const { post, commented, item,liked } = this.state
+    const { post, commented, item,liked, user } = this.state
 
 
     return (

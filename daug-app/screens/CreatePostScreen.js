@@ -114,14 +114,13 @@ export default class CreatePostScreen extends React.Component {
   async createPostPressed() {
     this.setState({ isLoading: true })
 
-    const { text, image } = this.state
+    const { text , image} = this.state
     const { navigate } = this.props.navigation
 
     var details = {
       'description': text,
 
     };
-
     if (image !== null) {
       details.image = image
     }
@@ -182,64 +181,64 @@ export default class CreatePostScreen extends React.Component {
 
   }
 
-  // _pickImage = async () => {
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //   });
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
 
-  //   if (result.cancelled) {
-  //     console.log('got here');
-  //     return;
-  //   }
+    if (result.cancelled) {
+      console.log('got here');
+      return;
+    }
 
-  //   let resizedUri = await new Promise((resolve, reject) => {
-  //     ImageEditor.cropImage(result.uri,
-  //       {
-  //         offset: { x: 0, y: 0 },
-  //         size: { width: result.width, height: result.height },
-  //         displaySize: { width: 50, height: 50 },
-  //         resizeMode: 'contain',
-  //       },
-  //       (uri) => resolve(uri),
-  //       () => reject(),
-  //     );
+    let resizedUri = await new Promise((resolve, reject) => {
+      ImageEditor.cropImage(result.uri,
+        {
+          offset: { x: 0, y: 0 },
+          size: { width: result.width, height: result.height },
+          displaySize: { width: result.width, height: result.height },
+          resizeMode: 'contain',
+        },
+        (uri) => resolve(uri),
+        () => reject(),
+      );
       
 
-  //   });
-  //   // this.setState({ image: resizedUri });
+    });
+    // this.setState({ image: resizedUri });
+     // this gives you a rct-image-store URI or a base64 image tag that
+    // you can use from ImageStore
 
-  //   const file = {
-  //     // `uri` can also be a file system path (i.e. file://)
-  //     uri: resizedUri,
-  //     name: `user_${this.state.profile.id}_post_${new Date().getTime()}.png`,
-  //     type: "image/png"
-  //   }
+    const file = {
+      // `uri` can also be a file system path (i.e. file://)
+      uri: resizedUri,
+      name: `user_${this.state.profile.id}_post_${new Date().getTime()}.png`,
+      type: "image/png"
+    }
 
-  //   const options = {
-  //     keyPrefix: "uploads/",
-  //     bucket: "daug",
-  //     region: "us-east-1",
-  //     accessKey: "AKIAIKG2UJ7AHBKJ5N2Q",
-  //     secretKey: "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",
-  //     successActionStatus: 201
-  //   }
+    const options = {
+      keyPrefix: "uploads/",
+      bucket: "daug",
+      region: "us-east-1",
+      accessKey: "AKIAIKG2UJ7AHBKJ5N2Q",
+      secretKey: "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",
+      successActionStatus: 201
+    }
 
-  //   RNS3.put(file, options).then(response => {
-  //     if (response.status !== 201)
-  //       throw new Error("Failed to upload image to S3");
+    RNS3.put(file, options).then(response => {
+      if (response.status !== 201)
+        throw new Error("Failed to upload image to S3");
+        else {
+          Alert.alert('Image uploaded successfully');
+        }
 
-  //     console.log(response.body);
+      console.log(response.body);
 
-  //     this.setState({ image: response.body.postResponse.location });
-  //   });
+      this.setState({ image: response.body.postResponse.location });
+    });
 
-  // };
-
-  
-
-
-
+  };
 
   
 
@@ -271,8 +270,9 @@ export default class CreatePostScreen extends React.Component {
       outerContainerStyles={{ backgroundColor: '#FAFAFA' }}
     />
   </SafeAreaView>
-  { !isProfileLoading &&
+ 
     <View style={styles.mainContainer}>
+    { !isProfileLoading &&
      <View style={styles.createPostContainer}>
       <View style={styles.createPostHeaderContainer}>
       {this._renderProfileImage(profile["profile_image"])}
@@ -301,9 +301,13 @@ export default class CreatePostScreen extends React.Component {
         />
       </View>
     </View>
-    {/* {this.state.image ? */}
-     <Image source={{ uri: image }} style={styles.postImage} resizeMode="cover" /> :
-    <View style={styles.uploadImageContainer}>
+    }
+   
+     <View style={styles.uploadImageContainer}>
+     {this.state.image ?
+      <Image source={{ uri: image }} 
+       style={styles.postImage} resizeMode="cover" /> :
+         <View style={styles.createAddPostImageContainer}>
             <TouchableOpacity onPress={this._pickImage}>
               <Ionicons
                 name='md-photos'
@@ -314,9 +318,12 @@ export default class CreatePostScreen extends React.Component {
               <Text style={styles.photoLabel}>Upload from library</Text>
             </TouchableOpacity>
           </View>
-    }
+     }
+          </View>
+    
+    
   </View>
-  }
+  
  </View> 
 
    );
@@ -405,8 +412,19 @@ const styles = StyleSheet.create({
   photoPostIcon: {
     alignSelf: 'center',
   },
+  createAddPostImageContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 200
+  },
   postImage: {
     width: '100%',
     height: 250
   },
 });
+
+
+
+
+
+

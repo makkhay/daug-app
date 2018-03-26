@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image,ScrollView, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image,ScrollView, FlatList, TouchableOpacity , Alert, DeviceEventEmitter} from 'react-native';
 import { SOCIAL_FEED_MOCK_DATA } from '../assets/SOCIAL_FEED_MOCK_DATA';
 import { Ionicons } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { Font } from 'expo';
 import COVER from '../assets/Cover.png'
+
+import { timeSince } from '../util/helper';
 
 export default class SocialFeedScreen extends React.Component {
 
@@ -31,7 +33,7 @@ export default class SocialFeedScreen extends React.Component {
     this.state = {
       commented: false,
       liked: false,
-      isFeedLoading: true,
+      isFeedLoading: false,
       posts: null,
 
       };
@@ -42,12 +44,20 @@ export default class SocialFeedScreen extends React.Component {
     });
     this.setState({ fontLoaded: true });
     this.getFeed();
+    
 
   }
 
+  componentWillMount() {
+    DeviceEventEmitter.addListener('new_post_created', (e) => {
+      this.getFeed()
+      
+    })
+  }
 
 
    async getFeed() {
+  
     try {
       let response = await fetch(`https://daug-app.herokuapp.com/api/feed`, {
         method: 'GET',
@@ -147,7 +157,7 @@ export default class SocialFeedScreen extends React.Component {
 
     _renderItem = ({item: post}) => {
       const { liked } = this.state
-      const { navigate } = this.props.navigation
+      const { navigate , isFeedLoading} = this.props.navigation
 
       
       return (
@@ -161,18 +171,18 @@ export default class SocialFeedScreen extends React.Component {
          >
          <Text style={styles.nameAndLocationContainer}> {post.user.name} </Text> 
          </TouchableOpacity> 
-            <Text style={styles.nameAndLocationContainer}>SF</Text>
+            <Text style={styles.timeAndLocationStamp}>SF</Text>
         </View>
       </View>
         
-    <TouchableOpacity  onPress={() => navigate('Post',{ post: post })}>
+    {/* <TouchableOpacity  onPress={() => navigate('Post',{ user: post.user})}> */}
      <View style={styles.postContentContainer}>
     
      {this._renderImage(post.image)}
      
   
      </View> 
-   </TouchableOpacity>
+   {/* </TouchableOpacity> */}
 
    <View style ={styles.descriptionContainer}>
    {this._renderDescription(post.description)}
@@ -180,28 +190,32 @@ export default class SocialFeedScreen extends React.Component {
   
    <View style = {styles.dateContainer}>
      
-         <Text> 2 hr</Text>
+         <Text style={styles.timeAndLocationStamp}>{timeSince(post.createdAt)}</Text>
 
+      <TouchableOpacity  onPress={() => Alert.alert('Coming soon')}>
        <View style= {styles.iconButtonContainer}>
          <Ionicons
           name="ios-chatbubbles-outline"
           size={30}
           color='#085947'
           style={{paddingRight: 1}}
+      
         />
         <Text style={styles.postActionText}>{post.comments ? post.comments.length : 0}</Text>
        </View>  
+       </TouchableOpacity>
 
       <TouchableOpacity  onPress={() => {  console.log('like pressed' + liked) 
         this.setState({ liked: !this.state.liked }); }} >
          <View style={[styles.postView, { marginRight: 15 }]}>
            <Ionicons
              name={liked ? "ios-heart" : "ios-heart-outline"}
-             color={liked ? 'red' : 'black'} size={30} />
-             <Text style={styles.postButtonText}>{post.likes}</Text>
+             color={liked ? 'red' : 'black'} size={30}/>
+             <Text style={styles.postButtonText}>{post.likes.length}</Text>
          </View>
      </TouchableOpacity> 
     </View>
+    
  
  </View> 
  
@@ -255,9 +269,14 @@ export default class SocialFeedScreen extends React.Component {
             style={styles.container}
             keyExtractor={(item, post) => post}
             renderItem={({item}) => this._renderItem({item})}
+            onRefresh={() => this.getFeed()}
+            refreshing={!isFeedLoading}
+           
          />
        }
+       
     </ScrollView>  
+    
     </View>
   
     );
@@ -389,4 +408,7 @@ const styles = StyleSheet.create({
     borderColor: '#aaaaaa',
     marginTop: -25
   },
+  timeAndLocationStamp:{
+    fontSize: 11
+  }
 });

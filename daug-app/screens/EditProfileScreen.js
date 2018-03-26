@@ -5,6 +5,8 @@ import {Header} from 'react-native-elements';
 import {getUserId} from '../util/helper';
 import { ImagePicker } from 'expo';
 
+import { RNS3 } from 'react-native-aws3';
+
 
 export default class EditProfileScreen extends React.Component {
   constructor(props) {
@@ -15,7 +17,7 @@ export default class EditProfileScreen extends React.Component {
       bio: '',
       profile: null,
       isProfileLoading: true,
-      image: null,
+      profile_image: null,
       
     }
   }  
@@ -86,13 +88,16 @@ export default class EditProfileScreen extends React.Component {
     }
   }
 
-  _renderProfileImage(image) {
-    if(image) {
+  
+  _renderProfileImage(profile_image) {
+    if(profile_image) {
       return (
+       
         <Image
         style={styles.profileImage}
-        source={{ uri: image }}
-      />      
+        source={{ uri: profile_image }}
+      />     
+        
     )
     }
      // if image is null
@@ -114,12 +119,12 @@ export default class EditProfileScreen extends React.Component {
   async submitProfile() {
     this.setState({ isLoading: true })
 
-    const { name, bio, image } = this.state
+    const { name, bio, profile_image } = this.state
 
     var details = {
       'name': name,
       'bio': bio,
-      'image': image
+      'profile_image': profile_image
 
     };
 
@@ -197,16 +202,49 @@ export default class EditProfileScreen extends React.Component {
         {
           offset: { x: 0, y: 0 },
           size: { width: result.width, height: result.height },
-          displaySize: { width: 50, height: 50 },
+          displaySize: { width: result.width, height: result.height },
           resizeMode: 'contain',
         },
         (uri) => resolve(uri),
         () => reject(),
       );
+      
+
+    });
+    // this.setState({ image: resizedUri });
+     // this gives you a rct-image-store URI or a base64 image tag that
+    // you can use from ImageStore
+
+    const file = {
+      // `uri` can also be a file system path (i.e. file://)
+      uri: resizedUri,
+      name: `user_${this.state.id}_profile_image_${new Date().getTime()}.png`,
+      type: "image/png"
+    }
+
+    const options = {
+      keyPrefix: "uploads/",
+      bucket: "daug",
+      region: "us-east-1",
+      accessKey: "AKIAIKG2UJ7AHBKJ5N2Q",
+      secretKey: "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",
+      successActionStatus: 201
+    }
+
+    RNS3.put(file, options).then(response => {
+      if (response.status !== 201)
+        throw new Error("Failed to upload image to S3");
+        else {
+          Alert.alert('Image uploaded successfully');
+        }
+
+      console.log(response.body);
+
+      this.setState({ profile_image: response.body.postResponse.location });
     });
 
-    this.setState({ image: resizedUri });
   };
+
 
 
 
@@ -222,7 +260,7 @@ export default class EditProfileScreen extends React.Component {
   }
 
   render() {
-    const { name,bio, profile, isProfileLoading } = this.state
+    const { name,bio, profile, isProfileLoading, profile_image } = this.state
 
 
    return(
@@ -252,16 +290,21 @@ export default class EditProfileScreen extends React.Component {
     />
   </SafeAreaView>
 
-       { !isProfileLoading &&
-       <View style={styles.photoContainer}>
-           
-               {this._renderProfileImage(profile["profile_image"])}
-
-            <TouchableOpacity   onPress={this._pickImage}>
+            
+           <View style={styles.photoContainer}>
+           { !isProfileLoading &&
+                <View style={styles.createAddPostImageContainer}>
+                 {this._renderProfileImage(profile["profile_image"])}
+          
+        </View>
+           }
+        <TouchableOpacity   onPress={this._pickImage}>
               <Text style={styles.changePhotoLabel}>Change Photo</Text>
             </TouchableOpacity>
+       
           </View>
-       }
+            
+       
           
           <View style={styles.detailsContainer}>
             <View style={styles.inputContainer}>
@@ -361,6 +404,11 @@ const styles = StyleSheet.create({
   },
    navBar: {
   fontWeight : 'bold'
-  }
+  },
+  createAddPostImageContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 200
+  },
   
 });
