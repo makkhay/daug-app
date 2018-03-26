@@ -4,7 +4,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import RootNavigator from './navigation/RootNavigator';
 
 import Home from './navigation/HomeTabs'
-// import CreatePost from './screens/CreatePostScreen'
 import ProfileScreen from './screens/ProfileScreen'
 
 
