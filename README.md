@@ -91,6 +91,29 @@ Social feed screen based on Facebook.
 ### Demo
 <img src='https://github.com/makkhay/daug-app/blob/master/screenshot.gif' title='Working Demo' width='' alt='Video Walkthrough' />
 
+### TODO
+
+- [x] Intro Screen - Make simple **`GET`** request to **`/api`** to check server status
+- [x] Signup Screen - Make **`POST`** request to **`/auth/signup`** to create a new user
+	- [ ] :star: **Bonus:** Add UI validation to Signup Screen - name (not null), email (format) & password (min. 8 characters)
+- [x] Login Screen - Make **`POST`** request to **`/auth/login`** to validate and login an existing user
+	- [ ] :star: **Bonus:** Add UI validation to Login Screen - email (format) & password (min. 8 characters)
+- [x] Social Feed Screen - Make **`GET`** request to **`/api/feed/`** to get all posts for social feed
+	- [x] :star: **Bonus:** Use `ActivityIndicator` to show placeholder loading when fetching feed data
+	- [x] :star: **Bonus:** Use `DeviceEventEmitter` to trigger fetching posts when the `new_post_created` event is emitted
+	- [x] :star: **Bonus:** Use `timeSince()` utility function to show relative times for post creation
+- [x] Create Post Screen - Make **`POST`** request to **`/api/users/:userId/posts`** to create a new post by the user
+  - [x] Use ImagePicker (expo) to allow the user to add a picture to the post - [Snack demo here](https://snack.expo.io/SyyDo-rr-)
+	- [x] :star: **Bonus:** Use `DeviceEventEmitter` to emit `new_post_created` event once post is created
+- [x] Profile Screen - Make **`GET`** request to **`/api/users/:userId`** to get all the profile data
+	- [x] :star: **Bonus:** Use `ActivityIndicator` to show placeholder loading when fetching profile data
+	- [x] :star: **Bonus:** Use `DeviceEventEmitter` to trigger fetching profile data when the `user_profile_updated` event is emitted
+- [x] Edit Profile Screen - Make **`PUT`** request to **`/api/users/:userId`** to update a user's profile information
+	- [x] :star: **Bonus:** Use `DeviceEventEmitter` to emit `user_profile_updated` event once user data is updated
+- [x] Setup Authentication flow for app using `AsyncStorage`. Once the user has logged in then take them to home page each time they open the app again
+
+## Wrap up
+
 
 
 
