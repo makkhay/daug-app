@@ -12,16 +12,6 @@ This repo is the mobile app for Daug.
 
 ### [Demo - Try it on Expo](https://expo.io/@makkhay/daug-app)
 
-## Getting started
-
-```
-git clone git@github.com:mobilespace/daug-mobile.git
-
-exp start
-
-exp ios
-```
-
 ## Assignment #1
 
 ### Objectives
@@ -143,3 +133,12 @@ In case you run into any problems or issues, please post it on #questions channe
 
 For any other questions about this repo in general please reach out to [**@Prakash**](https://github.com/makkhay) on Github.
 
+## Getting started
+
+```
+git clone git@github.com:mobilespace/daug-mobile.git
+
+exp start
+
+exp ios
+```
