@@ -141,5 +141,5 @@ In case you run into any problems or issues, please post it on #questions channe
 
 ## Finally
 
-For any other questions about this repo or MobileSpace in general please reach out to [**@Prakash**](https://github.com/makkhay) on Github.
+For any other questions about this repo in general please reach out to [**@Prakash**](https://github.com/makkhay) on Github.
 
