@@ -122,7 +122,7 @@ Social feed screen based on Facebook.
 
 ### TODO
 - [x] Add Like, Comment and Follow API functionality
-- [x] Clean up and format `README.MD` to showcase app - [follow this template](https://github.com/mobilespace/MobileGuides/blob/master/showcase_app_readme.md#readme-template-for-showcasing-a-mobile-app)
+- [ ] Clean up and format `README.MD` to showcase app - [follow this template](https://github.com/mobilespace/MobileGuides/blob/master/showcase_app_readme.md#readme-template-for-showcasing-a-mobile-app)
 - [ ] :star: **Bonus:** Add phone number UI to Edit Profile screen
 - [ ] :star: **Bonus:** Add Camera functionality to Create Post screen
 - [ ] :star: **Bonus:** Use Redux to share state between tab bar & screens
