@@ -141,5 +141,5 @@ In case you run into any problems or issues, please post it on #questions channe
 
 ## Finally
 
-For any other questions about this repo or MobileSpace in general please reach out to [**@monte9**](https://github.com/monte9) on Github.
+For any other questions about this repo or MobileSpace in general please reach out to [**@makkhay**](https://github.com/makkhay) on Github.
 
