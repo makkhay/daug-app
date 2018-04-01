@@ -16,9 +16,7 @@ const SocialStack = StackNavigator({
   Profile: {
     screen: ProfileScreen
   },
-  FriendProfile : {
-    screen: FriendProfile
-  },
+  
 
 
 });

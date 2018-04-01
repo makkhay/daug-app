@@ -14,7 +14,7 @@ export default class SocialFeedScreen extends React.Component {
 
 
   static navigationOptions = ({ navigation }) => ({
-    
+   
     title: 'Daug',
     headerTintColor: '#03A9F4',
     headerTitleStyle: {
@@ -273,26 +273,26 @@ export default class SocialFeedScreen extends React.Component {
 }
 
 
-// contentView() {
-//   const { posts, isFeedLoading } = this.state
+contentView() {
+  const { posts, isFeedLoading } = this.state
 
-//   return (
+  return (
    
-//     <View style={{ flex: 1, backgroundColor: 'white' }}>        
-//     <FlatList 
-//             style={styles.list}
-//             data = {posts}
-//             style={styles.container}
-//             keyExtractor={(item, post) => post}
-//             renderItem={({item}) => this._renderItem({item})}
-//             onRefresh={() => this.getFeed()}
-//             refreshing={isFeedLoading}
+    <View style={{ flex: 1, backgroundColor: 'white' }}>        
+    <FlatList 
+            style={styles.list}
+            data = {posts}
+            style={styles.container}
+            keyExtractor={(item, post) => post}
+            renderItem={({item}) => this._renderItem({item})}
+            onRefresh={() => this.getFeed()}
+            refreshing={isFeedLoading}
            
-//          />
-// </View> 
+         />
+</View> 
 
-//   )
-// }
+  )
+}
 
 
   render() {
@@ -320,23 +320,7 @@ export default class SocialFeedScreen extends React.Component {
         </TouchableOpacity>
       </View>  
       } 
-       {isFeedLoading ? this.loadingView() :
-
-       <View style={{ flex: 1, backgroundColor: 'white' }}>        
-       <FlatList 
-            style={styles.list}
-            data = {posts}
-            style={styles.container}
-            keyExtractor={(item, post) => post}
-            renderItem={({item}) => this._renderItem({item})}
-            onRefresh={() => this.getFeed()}
-            refreshing={isFeedLoading}
-           
-         />
-      </View> 
-       }
-
-
+       {isFeedLoading ? this.loadingView() : this.contentView()}
     
     </View>
   

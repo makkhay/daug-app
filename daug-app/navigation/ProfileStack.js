@@ -6,6 +6,8 @@ import EditProfileScreen from '../screens/EditProfileScreen';
 
 
 
+
+
 const ProfileStack = StackNavigator({
   Profile: {
     screen: ProfileScreen
@@ -13,11 +15,12 @@ const ProfileStack = StackNavigator({
   Post: {
     screen: PostScreen
   },
+  
 
   // EditProfile: {
   //   screen: EditProfileScreen
   // }, 
-  
+ 
 
 });
 

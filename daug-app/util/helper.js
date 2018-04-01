@@ -2,7 +2,7 @@ import { AsyncStorage, Platform, Alert } from 'react-native';
 
 
 
-
+export const ENV_URL =  "https://daug-app.herokuapp.com"
 
 // Auth navigation helpers
 export const USER_KEY = "secret-user-key-123-xyz";

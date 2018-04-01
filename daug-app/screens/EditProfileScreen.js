@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import {Header} from 'react-native-elements';
 import {getUserId} from '../util/helper';
 import { ImagePicker } from 'expo';
+import COVER from '../assets/Cover.png'
 
 import { RNS3 } from 'react-native-aws3';
 
