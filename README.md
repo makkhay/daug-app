@@ -136,7 +136,7 @@ For any other questions about this repo in general please reach out to [**@Praka
 ## Getting started
 
 ```
-git clone git@github.com:mobilespace/daug-mobile.git
+git clone git@github.com:makkhay/daug-app.git
 
 exp start
 
