@@ -1,10 +1,16 @@
-# Daug mobile app
+<p align="center">
+  <a href="https://github.com/makkhay/daug-app">
+    <img alt="daug" src="https://github.com/makkhay/daug-app/blob/master/daug_logo.png" width="250">
+  </a>
+</p>
 
-This repo is the mobile app for Daug.
+<h3 align="center">
+  Daug mobile app
+</h3>
 
-## What is Daug?
-
-**Daug is a social network for pets.**
+<p align="center">
+  Daug is a social network for pets where users can upload images, like, follow,and comment 
+</p>
 
 - Your pets can **sign up or login** using their paws.
 - They can **upload selfies** or **post their thoughts** for other pets to see.
