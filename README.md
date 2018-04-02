@@ -38,11 +38,13 @@
   <img src="Screenshots/Signup.png" width="270" />
   <img src="Screenshots/login.png" width="270" />
 </div>
+
 <div style={{display: flex; flex-direction: row}}>
-  <img src="Screenshots/feed.png" />
+  <img src="Screenshots/feed.png" width="270"  />
   <img src="Screenshots/PostDetail.png" width="270" />
   <img src="Screenshots/createpost.png" width="270" />
 </div>
+
 <div style={{display: flex; flex-direction: row}}>
   <img src="Screenshots/Freindsprofile.png" width="270" />
   <img src="Screenshots/profile.png" width="270" />
