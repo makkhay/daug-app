@@ -32,19 +32,7 @@ Used React Native Camera library to let the users take pictures while creating p
 
 Would like to implement Redux in the future to better manage the state. Also would like to add themeing to the app to enable light/dark modes, and overall make the app more dynamic and functional.
 
-## Getting started
-
-```
-git clone https://github.com/jkhusanov/daug-mobile.git
-
-exp start
-
-exp ios
-```
-
 ## Designs
-
-Intro, Login & Sign Up screens are based on **Robinhood App**.
 
 Profile screen is based on **Instagram**.
 
@@ -57,12 +45,7 @@ Below you can see my main milestones and how I achieved them
 
 ## Milestone #1
 
-### Objectives
 
-- Learn how to build & organize screens in RN
-- Learn advanced RN styling and use LinearGradient, Image, Icons & Custom Fonts
-- Learn how to use mock data for prototyping UI screens
-- Learn how to use NPM libaries such as React Native Elements, Expo & React Native Vector Icons
 
 ### TODO
 
@@ -80,11 +63,7 @@ Below you can see my main milestones and how I achieved them
 
 ## Milestone #2
 
-### Objectives
 
-- Learn how to build navigation for Daug app using [React Navigation](https://reactnavigation.org/)
-- Learn mobile design patterns for navigation & screen layouts
-- Learn how to quickly build RN screens and hook them up using navigation
 
 ### TODO
 
@@ -108,13 +87,6 @@ Below you can see my main milestones and how I achieved them
 
 ## Milestone #3
 
-### Objectives
-
-- Learn how to make backend API calls and User Authentication
-- Learn how to setup and use Redux and AsyncStorage
-- Serve as an React Native app that you can showcase on your porfolio
-
-#### URL: [https://daug-app.herokuapp.com](https://daug-app.herokuapp.com)
 
 ### TODO
 
@@ -140,12 +112,6 @@ Below you can see my main milestones and how I achieved them
 
 ## Wrap up
 
-### Objectives
-
-- Add UI polish, tie up loose end and add remaining functionality
-- Update Readme with app details and publish Expo app for demo
-- Serve as an React Native app that you can showcase on your porfolio
-
 ### TODO
 - [x] Dynamically load user info 
 - [x] Fix photo upload and add take photo functionality
@@ -155,6 +121,18 @@ Below you can see my main milestones and how I achieved them
 - [x] :star: **Bonus:** Add Camera functionality to Create Post screen
 - [ ] :star: **Bonus:** Use Redux to share state between tab bar & screens
 - [x] Add working gif of app to `README.MD`
+
+
+## Getting started
+
+```
+git clone git@github.com:makkhay/daug-app.git
+
+exp start
+
+exp ios
+```
+
 
 
 ## Feedback
