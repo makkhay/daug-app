@@ -31,6 +31,25 @@
 - Users can follow each other
 
 
+## Demo and Screenshots
+
+<div style={{display: flex; flex-direction: row}}>
+  <img src="Screenshots/Intro.png" width="270" />
+  <img src="Screenshots/Signup.png" width="270" />
+  <img src="Screenshots/login.png" width="270" />
+</div>
+<div style={{display: flex; flex-direction: row}}>
+  <img src="Screenshots/feed.png" />
+  <img src="Screenshots/PostDetail.png" width="270" />
+  <img src="Screenshots/createpost.png" width="270" />
+</div>
+<div style={{display: flex; flex-direction: row}}>
+  <img src="Screenshots/Freindsprofile.png" width="270" />
+  <img src="Screenshots/profile.png" width="270" />
+  <img src="Screenshots/editprofile.png" width="270" />
+</div>
+
+
 Used React Native Camera library to let the users to post pictures. Also used React Native Elements library to build UI, React Navigation library to handle navigation, and packages such as react-native-modal and react-native-keyboard-aware-scroll-view to improve UI. 
 
 Would like to implement a feature to see the list of followers and following. Also would like to add theme to the app to enable light/dark modes, and overall make the app more dynamic and functional.
