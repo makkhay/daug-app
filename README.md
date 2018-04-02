@@ -9,6 +9,7 @@
 </h3>
 
 
+### [Demo - Try it on Expo](https://expo.io/@makkhay/daug-app)
 
 ## What's Daug?
 
@@ -18,7 +19,9 @@
 - They can **upload selfies** or **post their thoughts** for other pets to see.
 - They can also look at **other pets posts** and either **paw** (like) or **scratch** (dislike) it.
 
-### [Demo - Try it on Expo](https://expo.io/@makkhay/daug-app)
+
+
+
 
 ## Functionality
 - Daug is a fully functioning Social Network app
