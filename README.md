@@ -33,6 +33,8 @@
 
 ## Demo and Screenshots
 
+![daug_demo](https://github.com/makkhay/daug-app/blob/master/screenshot3.gif)
+
 <div style={{display: flex; flex-direction: row}}>
   <img src="Screenshots/Intro.png" width="270" />
   <img src="Screenshots/Signup.png" width="270" />
