@@ -8,9 +8,11 @@
   Daug mobile app
 </h3>
 
-<p align="center">
-  Daug is a social network for pets where users can upload images, like, follow,and comment 
-</p>
+### [Demo - Try it on Expo](https://exp.host/@jkhusanov/daug-mobile)
+
+## What's Daug?
+
+**Daug is a social network for pets.**
 
 - Your pets can **sign up or login** using their paws.
 - They can **upload selfies** or **post their thoughts** for other pets to see.
