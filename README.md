@@ -26,9 +26,10 @@
 ## Functionality
 - Daug is a fully functioning Social Network app
 - Users can Sign up & Log into the app
-- Users can create a new Posts
+- Users can create new Posts
 - Users can like and comments on Posts
 - Users can follow each other
+- Users can edit their profile
 
 
 ## Demo and Screenshots
@@ -54,7 +55,7 @@
 </div>
 
 
-Used React Native Camera library to let the users to post pictures. Also used React Native Elements library to build UI, React Navigation library to handle navigation, and packages such as react-native-modal and react-native-keyboard-aware-scroll-view to improve UI. 
+I have used React Native Camera library to let the users to post pictures. Also used React Native Elements library to build UI, React Navigation library to handle navigation, and packages such as react-native-modal and react-native-keyboard-aware-scroll-view to improve UI. 
 
 Would like to implement a feature to see the list of followers and following. Also would like to add theme to the app to enable light/dark modes, and overall make the app more dynamic and functional.
 
