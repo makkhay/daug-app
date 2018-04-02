@@ -28,9 +28,9 @@
 - Users can follow each other
 
 
-Used React Native Camera library to let the users take pictures while creating posts or upload a new profile picture. Also used React Native Elements library to build UI, React Navigation library to handle navigation, and packages such as react-native-modal and react-native-keyboard-aware-scroll-view to improve UI. 
+Used React Native Camera library to let the users to post pictures. Also used React Native Elements library to build UI, React Navigation library to handle navigation, and packages such as react-native-modal and react-native-keyboard-aware-scroll-view to improve UI. 
 
-Would like to implement Redux in the future to better manage the state. Also would like to add themeing to the app to enable light/dark modes, and overall make the app more dynamic and functional.
+Would like to implement a feature to see the list of followers and following. Also would like to add theme to the app to enable light/dark modes, and overall make the app more dynamic and functional.
 
 ## Designs
 
@@ -52,9 +52,7 @@ Below you can see my main milestones and how I achieved them
 - [x] Design & build an Intro Screen
   - [ ] :star: **Bonus:** Add [Snap Carousel](https://github.com/archriss/react-native-snap-carousel) with [Lottie animations](https://docs.expo.io/versions/latest/sdk/lottie.html) to Intro Screen
 - [x] Design & build an Signup Screen
-  - [x] :star: **Bonus:** Add buttons to sign up with Facebook & Twitter
 - [x] Design & build an Login Screen
-  - [x] :star: **Bonus:** Add buttons to login with Facebook & Twitter
 - [x] Design & build an Profile Screen
   - [x] :star: **Bonus:** Add the Logout button
 - [x] Design & build an Social Feed Screen with [Mock Data](https://raw.githubusercontent.com/mobilespace/daug-mobile/c4d4a331564ee490e1162f3733f3023afe3defc3/app/utils/constants.js)
@@ -118,7 +116,6 @@ Below you can see my main milestones and how I achieved them
 - [x] Add Like, Comment and Follow API functionality
 - [x] Clean up and format `README.MD` to showcase app - [follow this template](https://github.com/mobilespace/MobileGuides/blob/master/showcase_app_readme.md#readme-template-for-showcasing-a-mobile-app)
 - [ ] :star: **Bonus:** Add phone number UI to Edit Profile screen
-- [x] :star: **Bonus:** Add Camera functionality to Create Post screen
 - [ ] :star: **Bonus:** Use Redux to share state between tab bar & screens
 - [x] Add working gif of app to `README.MD`
 
