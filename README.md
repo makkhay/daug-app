@@ -95,7 +95,7 @@ Below you can see my main milestones and how I achieved them
 - [x] Understand the 3 main navigation patterns for mobile apps:
   - [x] [StackNavigator](https://reactnavigation.org/docs/hello-react-navigation.html#creating-a-stacknavigator)
   - [x] [TabNavigator](https://reactnavigation.org/docs/tab-based-navigation.html)
-  - [x] [DrawerNavigator](https://reactnavigation.org/docs/drawer-based-navigation.html)
+  - [] [DrawerNavigator](https://reactnavigation.org/docs/drawer-based-navigation.html)
 - [x] Setup a **IntroStack** (using StackNavigator) for the Intro Screen (root), Login Screen (push) & Sign Up Screen (push)
 - [x] Setup a **HomeTabs** (using TabNavigator) for the Social Feed Screen (default) and Profile Screen
 - [x] Setup a **RootNavigator** (using StackNavigator) with the **IntroStack** & **HomeTabs** with `mode: "modal"`
